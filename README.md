@@ -3,7 +3,7 @@
 一般社団法人 大東青年会議所 創立55周年記念事業の一般公募サイト。
 
 ## 公開URL
-https://morimoto-crypto.github.io/daito-jc-character-2026/
+https://daito-jc-2026.github.io/daito-jc-character-2026/
 
 ## 応募期間
 2026年5月中旬 〜 6月中旬
@@ -18,9 +18,10 @@ https://morimoto-crypto.github.io/daito-jc-character-2026/
 ブラウザで `index.html` を開くだけで動作する。
 
 ## デプロイ
-- リポジトリ: https://github.com/morimoto-crypto/daito-jc-character-2026
+- リポジトリ: https://github.com/daito-jc-2026/daito-jc-character-2026
 - GitHub Pages（`main` ブランチ / ルート）。`git push` で自動反映（数十秒）。
 - 編集ワークフロー: 本worktree の `site/` を編集 → 同内容を `~/Documents/daito-jc-character-2026/` にコピー → `git push`
+  - 旧 morimoto-crypto アカウント時のローカルクローンは `~/Documents/daito-jc-character-2026-morimoto-crypto-old/` に退避済（削除可）
 
 ## 主催
 一般社団法人 大東青年会議所
