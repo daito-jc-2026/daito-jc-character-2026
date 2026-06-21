@@ -192,6 +192,49 @@
   .cta-primary:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--hot), 7px 7px 0 1px var(--ink); }
   .cta-primary:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--hot); }
 
+  /* 募集終了：感謝＋選考中ボックス */
+  .thanks-box {
+    margin-top: 20px;
+    background: var(--gold);
+    border: 3px solid var(--ink);
+    border-radius: 20px;
+    padding: 20px 18px 18px;
+    text-align: center;
+    box-shadow: 5px 5px 0 var(--hot), 5px 5px 0 1px var(--ink);
+    transform: rotate(-1deg);
+    position: relative;
+    z-index: 1;
+  }
+  .thanks-mark {
+    margin: 0 0 4px;
+    font-size: 22px;
+    letter-spacing: 8px;
+    animation: thanksSparkle 1.8s ease-in-out infinite;
+  }
+  @keyframes thanksSparkle {
+    0%,100% { transform: scale(1); opacity: 0.85; }
+    50% { transform: scale(1.15); opacity: 1; }
+  }
+  .thanks-main {
+    font-family: 'Mochiy Pop One', sans-serif;
+    font-size: 23px;
+    color: var(--hot);
+    text-shadow: 2px 2px 0 var(--ink);
+    letter-spacing: -0.5px;
+    margin: 0 0 12px;
+    line-height: 1.2;
+  }
+  .thanks-main ruby rt { font-size: 0.42em; color: rgba(0,0,0,0.55); text-shadow: none; }
+  .thanks-sub {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.75;
+  }
+  .thanks-sub b { color: var(--hot); font-weight: 900; }
+
   .about {
     background-image:
       radial-gradient(circle, rgba(0,0,0,0.07) 1px, transparent 1.5px),
@@ -608,7 +651,11 @@
 
 <p class="hero-catch"><b><ruby>君<rt>きみ</rt></ruby></b>が<ruby>考<rt>かんが</rt></ruby>えたキャラクターが<br><b><ruby>公式<rt>こうしき</rt></ruby>キャラ</b>に<ruby>変身<rt>へんしん</rt></ruby>？！</p>
 
-<a class="cta-primary" href="https://lin.ee/qbm9hZG" target="_blank" rel="noopener">▶ LINEで<ruby>応募<rt>おうぼ</rt></ruby></a>
+<div class="thanks-box">
+  <p class="thanks-mark">✨</p>
+  <p class="thanks-main">たくさんのご<ruby>応募<rt>おうぼ</rt></ruby><br>ありがとう！</p>
+  <p class="thanks-sub">ただいま <b><ruby>選考<rt>せんこう</rt></ruby><ruby>中<rt>ちゅう</rt></ruby></b> です<br><ruby>結果<rt>けっか</rt></ruby><ruby>発表<rt>はっぴょう</rt></ruby>をおたのしみに！</p>
+</div>
   </section>
   <section class="about" aria-labelledby="about-heading">
 <h2 class="tag" id="about-heading">★ <ruby>大東<rt>だいとう</rt></ruby><ruby>青年<rt>せいねん</rt></ruby><ruby>会議所<rt>かいぎしょ</rt></ruby>（JC）ってなに？</h2>
@@ -723,8 +770,12 @@
 </div>
 </section>
   <section class="final-cta" aria-label="最終CTA">
-<p class="final-ready"><ruby>準備<rt>じゅんび</rt></ruby>はいいかな？</p>
-<a class="cta-primary" href="https://lin.ee/qbm9hZG" target="_blank" rel="noopener">▶ LINEで<ruby>応募<rt>おうぼ</rt></ruby></a>
+<p class="final-ready">ご<ruby>応募<rt>おうぼ</rt></ruby>ありがとうございました</p>
+<div class="thanks-box">
+  <p class="thanks-mark">✨</p>
+  <p class="thanks-main">たくさんのご<ruby>応募<rt>おうぼ</rt></ruby><br>ありがとう！</p>
+  <p class="thanks-sub">ただいま <b><ruby>選考<rt>せんこう</rt></ruby><ruby>中<rt>ちゅう</rt></ruby></b> です<br><ruby>結果<rt>けっか</rt></ruby><ruby>発表<rt>はっぴょう</rt></ruby>をおたのしみに！</p>
+</div>
 </section>
 </main>
 
