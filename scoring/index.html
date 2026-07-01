@@ -139,6 +139,33 @@
 
     .progress-label span { font-weight: 600; color: #4A90D9; }
 
+    .filter-toggle {
+      display: inline-block;
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 14px;
+      border: 1.5px solid #e0e0e0;
+      background: #fff;
+      color: #888;
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-left: 8px;
+      white-space: nowrap;
+    }
+
+    .filter-toggle.active {
+      border-color: #e53935;
+      background: #FFF3F3;
+      color: #e53935;
+      font-weight: 600;
+    }
+
+    .progress-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
     .progress-bar {
       height: 6px;
       background: #e0e0e0;
@@ -642,8 +669,11 @@
 <div id="scoring-screen">
   <!-- Progress -->
   <div class="progress-bar-wrap">
-    <div class="progress-label">
-      採点済み：<span id="progress-text">0 / 0 作品</span>
+    <div class="progress-top-row">
+      <div class="progress-label">
+        採点済み：<span id="progress-text">0 / 0 作品</span>
+      </div>
+      <button class="filter-toggle" id="filter-unscored" onclick="toggleUnscoredFilter()">未採点のみ</button>
     </div>
     <div class="progress-bar">
       <div class="progress-fill" id="progress-fill" style="width:0%"></div>
@@ -950,13 +980,20 @@
     renderScoreButtons("score-c3", 3, workScore.c3);
     updateTotalScore();
 
-    // Nav buttons
-    document.getElementById("btn-prev").disabled = (currentIndex === 0);
-    document.getElementById("btn-next").disabled = (currentIndex === works.length - 1);
-
-    // Nav indicator
-    document.getElementById("nav-indicator").textContent =
-      `${currentIndex + 1} / ${works.length}`;
+    // Nav buttons & indicator
+    if (unscoredOnly) {
+      const unscored = getUnscoredIndices();
+      const pos = unscored.indexOf(currentIndex);
+      document.getElementById("btn-prev").disabled = (pos <= 0);
+      document.getElementById("btn-next").disabled = (pos >= unscored.length - 1);
+      document.getElementById("nav-indicator").textContent =
+        `${pos + 1} / ${unscored.length}（未採点）`;
+    } else {
+      document.getElementById("btn-prev").disabled = (currentIndex === 0);
+      document.getElementById("btn-next").disabled = (currentIndex === works.length - 1);
+      document.getElementById("nav-indicator").textContent =
+        `${currentIndex + 1} / ${works.length}`;
+    }
 
     // Progress
     updateProgress();
@@ -991,6 +1028,17 @@
     updateTotalScore();
     updateProgress();
     updateSubmitVisibility();
+
+    // Update filter count
+    if (unscoredOnly) {
+      const unscored = getUnscoredIndices();
+      const btn = document.getElementById("filter-unscored");
+      if (unscored.length === 0) {
+        btn.textContent = `未採点のみ（残0件）`;
+      } else {
+        btn.textContent = `未採点のみ（残${unscored.length}件）`;
+      }
+    }
   }
 
   function updateTotalScore() {
@@ -1029,11 +1077,70 @@
     document.getElementById("submit-area").style.display = allDone ? "block" : "none";
   }
 
+  // ===================== FILTER =====================
+  let unscoredOnly = false;
+
+  function isScored(w) {
+    const ws = scores[w.id];
+    return ws && ws.c1 && ws.c2 && ws.c3;
+  }
+
+  function getUnscoredIndices() {
+    return works.map((w, i) => i).filter(i => !isScored(works[i]));
+  }
+
+  function toggleUnscoredFilter() {
+    unscoredOnly = !unscoredOnly;
+    const btn = document.getElementById("filter-unscored");
+    btn.classList.toggle("active", unscoredOnly);
+
+    if (unscoredOnly) {
+      const unscored = getUnscoredIndices();
+      if (unscored.length === 0) {
+        unscoredOnly = false;
+        btn.classList.remove("active");
+        alert("すべての作品が採点済みです！");
+        return;
+      }
+      btn.textContent = `未採点のみ（残${unscored.length}件）`;
+      if (isScored(works[currentIndex])) {
+        currentIndex = unscored[0];
+      }
+    } else {
+      btn.textContent = "未採点のみ";
+    }
+    renderCurrentWork();
+  }
+
   // ===================== NAVIGATION =====================
   function navigate(dir) {
-    const newIdx = currentIndex + dir;
-    if (newIdx < 0 || newIdx >= works.length) return;
-    currentIndex = newIdx;
+    if (unscoredOnly) {
+      const unscored = getUnscoredIndices();
+      if (unscored.length === 0) {
+        toggleUnscoredFilter();
+        return;
+      }
+      const curPos = unscored.indexOf(currentIndex);
+      let nextPos;
+      if (dir > 0) {
+        nextPos = curPos === -1 ? unscored.findIndex(i => i > currentIndex) : curPos + 1;
+        if (nextPos < 0 || nextPos >= unscored.length) return;
+      } else {
+        nextPos = curPos === -1 ? unscored.reverse().findIndex(i => i < currentIndex) : curPos - 1;
+        if (curPos === -1) {
+          const rev = [...unscored].reverse();
+          const found = rev.findIndex(i => i < currentIndex);
+          if (found === -1) return;
+          nextPos = unscored.length - 1 - found;
+        }
+        if (nextPos < 0) return;
+      }
+      currentIndex = unscored[nextPos];
+    } else {
+      const newIdx = currentIndex + dir;
+      if (newIdx < 0 || newIdx >= works.length) return;
+      currentIndex = newIdx;
+    }
     renderCurrentWork();
   }
 
