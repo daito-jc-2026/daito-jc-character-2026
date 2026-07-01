@@ -271,6 +271,15 @@
       margin-bottom: 10px;
     }
 
+    .score-hints {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: #aaa;
+      margin-top: 4px;
+      padding: 0 4px;
+    }
+
     .score-buttons {
       display: flex;
       gap: 8px;
@@ -673,7 +682,7 @@
       <!-- Criteria 1 -->
       <div class="criteria-group">
         <div class="criteria-label">① JC・地域適合性</div>
-        <div class="criteria-desc">JCの理念や地域のイメージが表現されているか</div>
+        <div class="criteria-desc">大東市やJCらしさが表現されているか</div>
         <div class="score-buttons" id="score-c1">
           <button class="score-btn" onclick="setScore(1,1)">1</button>
           <button class="score-btn" onclick="setScore(1,2)">2</button>
@@ -681,12 +690,13 @@
           <button class="score-btn" onclick="setScore(1,4)">4</button>
           <button class="score-btn" onclick="setScore(1,5)">5</button>
         </div>
+        <div class="score-hints"><span>関連が薄い</span><span>一部感じる</span><span>大東市らしさが明確</span></div>
       </div>
 
       <!-- Criteria 2 -->
       <div class="criteria-group">
         <div class="criteria-label">② 独創性</div>
-        <div class="criteria-desc">独創性があるか</div>
+        <div class="criteria-desc">オリジナリティのある発想・デザインか</div>
         <div class="score-buttons" id="score-c2">
           <button class="score-btn" onclick="setScore(2,1)">1</button>
           <button class="score-btn" onclick="setScore(2,2)">2</button>
@@ -694,12 +704,13 @@
           <button class="score-btn" onclick="setScore(2,4)">4</button>
           <button class="score-btn" onclick="setScore(2,5)">5</button>
         </div>
+        <div class="score-hints"><span>ありがち</span><span>工夫あり</span><span>驚きがある</span></div>
       </div>
 
       <!-- Criteria 3 -->
       <div class="criteria-group">
         <div class="criteria-label">③ 第一印象・親しみやすさ</div>
-        <div class="criteria-desc">ポジティブな印象を持たれるか</div>
+        <div class="criteria-desc">幅広い世代に愛されそうか</div>
         <div class="score-buttons" id="score-c3">
           <button class="score-btn" onclick="setScore(3,1)">1</button>
           <button class="score-btn" onclick="setScore(3,2)">2</button>
@@ -707,6 +718,7 @@
           <button class="score-btn" onclick="setScore(3,4)">4</button>
           <button class="score-btn" onclick="setScore(3,5)">5</button>
         </div>
+        <div class="score-hints"><span>印象に残りにくい</span><span>悪くない</span><span>一目で好感</span></div>
       </div>
 
       <!-- Total -->
