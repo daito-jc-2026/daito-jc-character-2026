@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JCキャラクター投票システム</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      min-height: 100vh;
+    }
+
+    /* ===================== NAME SCREEN ===================== */
+    #name-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .name-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+      padding: 40px 32px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .name-card h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #4A90D9;
+      margin-bottom: 8px;
+    }
+
+    .name-card p {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 28px;
+    }
+
+    .name-card input[type="text"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 16px;
+    }
+
+    .name-card input[type="text"]:focus {
+      border-color: #4A90D9;
+    }
+
+    .btn-primary {
+      background: #4A90D9;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 13px 32px;
+      font-size: 16px;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s, opacity 0.2s;
+    }
+
+    .btn-primary:hover { background: #357abd; }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .name-error {
+      color: #e53935;
+      font-size: 13px;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* ===================== ALREADY VOTED ===================== */
+    #voted-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .voted-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+      padding: 40px 32px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .voted-card .icon { font-size: 48px; margin-bottom: 16px; }
+    .voted-card h2 { font-size: 20px; margin-bottom: 12px; color: #333; }
+    .voted-card p { font-size: 14px; color: #666; }
+
+    /* ===================== SCORING SCREEN ===================== */
+    #scoring-screen {
+      display: none;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Progress bar */
+    .progress-bar-wrap {
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .progress-label {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .progress-label span { font-weight: 600; color: #4A90D9; }
+
+    .progress-bar {
+      height: 6px;
+      background: #e0e0e0;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #4A90D9;
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    /* Work header */
+    .work-header {
+      text-align: center;
+      padding: 16px 20px 8px;
+      font-size: 14px;
+      color: #888;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    /* Main card */
+    .work-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      margin: 0 16px 16px;
+      overflow: hidden;
+    }
+
+    .card-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    /* Image column */
+    .image-col {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fafafa;
+      border-right: 1px solid #f0f0f0;
+      min-height: 300px;
+    }
+
+    .work-image {
+      max-width: 100%;
+      max-height: 340px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: block;
+      object-fit: contain;
+      transition: opacity 0.2s;
+    }
+
+    .work-image:hover { opacity: 0.9; }
+
+    .no-image {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #bbb;
+      font-size: 14px;
+      gap: 8px;
+    }
+
+    .no-image-icon { font-size: 40px; }
+
+    /* Profile column */
+    .profile-col {
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .profile-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .profile-table tr + tr td { border-top: 1px solid #f0f0f0; }
+
+    .profile-table td {
+      padding: 8px 6px;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .profile-table td:first-child {
+      color: #888;
+      font-size: 12px;
+      white-space: nowrap;
+      width: 90px;
+      font-weight: 600;
+    }
+
+    .profile-table td:last-child {
+      color: #333;
+      word-break: break-word;
+    }
+
+    /* Scoring section */
+    .scoring-section {
+      border-top: 1px solid #f0f0f0;
+      padding: 20px;
+    }
+
+    .criteria-group {
+      margin-bottom: 16px;
+    }
+
+    .criteria-group:last-child { margin-bottom: 0; }
+
+    .criteria-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    .criteria-desc {
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 10px;
+    }
+
+    .score-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .score-btn {
+      width: 48px;
+      height: 40px;
+      border-radius: 8px;
+      border: 2px solid #e0e0e0;
+      background: #fafafa;
+      font-size: 16px;
+      font-weight: 600;
+      color: #555;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .score-btn:hover {
+      border-color: #4A90D9;
+      background: #f0f6ff;
+      color: #4A90D9;
+    }
+
+    .score-btn.selected {
+      border-color: #4A90D9;
+      background: #E8F0FE;
+      color: #4A90D9;
+    }
+
+    .total-score {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid #f0f0f0;
+      font-size: 13px;
+      color: #666;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .total-score .score-val {
+      font-size: 20px;
+      font-weight: 700;
+      color: #4A90D9;
+    }
+
+    .total-score .score-max { color: #aaa; font-size: 12px; }
+
+    /* Navigation */
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      gap: 12px;
+    }
+
+    .btn-nav {
+      background: #fff;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-family: inherit;
+      font-weight: 600;
+      color: #555;
+      cursor: pointer;
+      transition: all 0.15s;
+      min-width: 90px;
+    }
+
+    .btn-nav:hover:not(:disabled) {
+      border-color: #4A90D9;
+      color: #4A90D9;
+    }
+
+    .btn-nav:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .nav-indicator {
+      font-size: 13px;
+      color: #888;
+      text-align: center;
+      flex: 1;
+    }
+
+    /* Submit area */
+    .submit-area {
+      padding: 0 16px 16px;
+      display: none;
+    }
+
+    .btn-submit {
+      background: #34A853;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 15px;
+      font-size: 17px;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s;
+    }
+
+    .btn-submit:hover { background: #2e9448; }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .submit-hint {
+      text-align: center;
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 6px;
+    }
+
+    /* ===================== DONE SCREEN ===================== */
+    #done-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .done-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+      padding: 48px 32px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .done-card .icon { font-size: 56px; margin-bottom: 20px; }
+    .done-card h2 { font-size: 22px; font-weight: 700; color: #34A853; margin-bottom: 12px; }
+    .done-card p { font-size: 14px; color: #666; line-height: 1.7; }
+
+    /* ===================== IMAGE MODAL ===================== */
+    #img-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      cursor: pointer;
+    }
+
+    #img-modal.open { display: flex; }
+
+    #img-modal img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 8px;
+      object-fit: contain;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.5);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      color: #fff;
+      font-size: 32px;
+      cursor: pointer;
+      line-height: 1;
+      opacity: 0.8;
+    }
+
+    .modal-close:hover { opacity: 1; }
+
+    /* ===================== LOADING / ERROR ===================== */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 500;
+      font-size: 16px;
+      color: #666;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      border: 3px solid #e0e0e0;
+      border-top-color: #4A90D9;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin-right: 12px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 600px) {
+      .card-body {
+        grid-template-columns: 1fr;
+      }
+      .image-col {
+        border-right: none;
+        border-bottom: 1px solid #f0f0f0;
+        min-height: 220px;
+      }
+      .work-image { max-height: 260px; }
+      .score-btn { width: 44px; height: 38px; }
+      .work-card { margin: 0 8px 12px; }
+      .nav-bar { padding: 12px 8px; }
+      .btn-nav { padding: 10px 14px; font-size: 13px; min-width: 75px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAME ENTRY SCREEN -->
+<div id="name-screen">
+  <div class="name-card">
+    <h1>JCキャラクター投票</h1>
+    <p>あなたのお名前を入力して投票を開始してください。</p>
+    <input type="text" id="voter-name-input" placeholder="お名前を入力" maxlength="30" autocomplete="off">
+    <button class="btn-primary" id="start-btn" onclick="handleNameSubmit()">採点を開始する</button>
+    <div class="name-error" id="name-error"></div>
+  </div>
+</div>
+
+<!-- ALREADY VOTED SCREEN -->
+<div id="voted-screen">
+  <div class="voted-card">
+    <div class="icon">✅</div>
+    <h2>投票済みです</h2>
+    <p id="voted-message">すでに投票が完了しています。<br>ご参加ありがとうございました！</p>
+  </div>
+</div>
+
+<!-- SCORING SCREEN -->
+<div id="scoring-screen">
+  <!-- Progress -->
+  <div class="progress-bar-wrap">
+    <div class="progress-label">
+      採点済み：<span id="progress-text">0 / 0 作品</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- Work number -->
+  <div class="work-header" id="work-header">作品 1 / 24</div>
+
+  <!-- Work card -->
+  <div class="work-card">
+    <div class="card-body">
+      <!-- Image column -->
+      <div class="image-col" id="image-col">
+        <img src="" alt="作品画像" class="work-image" id="work-image" onclick="openModal(this.src)">
+      </div>
+
+      <!-- Profile column -->
+      <div class="profile-col">
+        <table class="profile-table" id="profile-table">
+          <tr><td>キャラ名</td><td id="pf-name">—</td></tr>
+          <tr><td>性格</td><td id="pf-personality">—</td></tr>
+          <tr><td>特技</td><td id="pf-skill">—</td></tr>
+          <tr><td>好きな場所</td><td id="pf-place">—</td></tr>
+          <tr><td>弱点</td><td id="pf-weakness">—</td></tr>
+          <tr><td>好きな食べ物</td><td id="pf-food">—</td></tr>
+          <tr><td>口癖</td><td id="pf-catchphrase">—</td></tr>
+          <tr><td>夢・目標</td><td id="pf-dream">—</td></tr>
+          <tr><td>もっとおしえて</td><td id="pf-extra">—</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Scoring section -->
+    <div class="scoring-section">
+      <!-- Criteria 1 -->
+      <div class="criteria-group">
+        <div class="criteria-label">① JC・地域適合性</div>
+        <div class="criteria-desc">JCの理念や地域のイメージが表現されているか</div>
+        <div class="score-buttons" id="score-c1">
+          <button class="score-btn" onclick="setScore(1,1)">1</button>
+          <button class="score-btn" onclick="setScore(1,2)">2</button>
+          <button class="score-btn" onclick="setScore(1,3)">3</button>
+          <button class="score-btn" onclick="setScore(1,4)">4</button>
+          <button class="score-btn" onclick="setScore(1,5)">5</button>
+        </div>
+      </div>
+
+      <!-- Criteria 2 -->
+      <div class="criteria-group">
+        <div class="criteria-label">② 独創性</div>
+        <div class="criteria-desc">独創性があるか</div>
+        <div class="score-buttons" id="score-c2">
+          <button class="score-btn" onclick="setScore(2,1)">1</button>
+          <button class="score-btn" onclick="setScore(2,2)">2</button>
+          <button class="score-btn" onclick="setScore(2,3)">3</button>
+          <button class="score-btn" onclick="setScore(2,4)">4</button>
+          <button class="score-btn" onclick="setScore(2,5)">5</button>
+        </div>
+      </div>
+
+      <!-- Criteria 3 -->
+      <div class="criteria-group">
+        <div class="criteria-label">③ 第一印象・親しみやすさ</div>
+        <div class="criteria-desc">ポジティブな印象を持たれるか</div>
+        <div class="score-buttons" id="score-c3">
+          <button class="score-btn" onclick="setScore(3,1)">1</button>
+          <button class="score-btn" onclick="setScore(3,2)">2</button>
+          <button class="score-btn" onclick="setScore(3,3)">3</button>
+          <button class="score-btn" onclick="setScore(3,4)">4</button>
+          <button class="score-btn" onclick="setScore(3,5)">5</button>
+        </div>
+      </div>
+
+      <!-- Total -->
+      <div class="total-score">
+        合計：<span class="score-val" id="total-score-val">—</span>
+        <span class="score-max">/ 15点</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav-bar">
+    <button class="btn-nav" id="btn-prev" onclick="navigate(-1)">← 前へ</button>
+    <div class="nav-indicator" id="nav-indicator"></div>
+    <button class="btn-nav" id="btn-next" onclick="navigate(1)">次へ →</button>
+  </div>
+
+  <!-- Submit -->
+  <div class="submit-area" id="submit-area">
+    <button class="btn-submit" id="btn-submit" onclick="handleSubmit()">投票を送信する</button>
+    <div class="submit-hint">送信前に確認ダイアログが表示されます</div>
+  </div>
+</div>
+
+<!-- DONE SCREEN -->
+<div id="done-screen">
+  <div class="done-card">
+    <div class="icon">🎉</div>
+    <h2>投票が完了しました！</h2>
+    <p>ご参加いただきありがとうございました。<br>集計結果をお楽しみに！</p>
+  </div>
+</div>
+
+<!-- IMAGE MODAL -->
+<div id="img-modal" onclick="closeModal()">
+  <span class="modal-close" onclick="closeModal()">✕</span>
+  <img src="" alt="拡大画像" id="modal-img" onclick="event.stopPropagation()">
+</div>
+
+<!-- LOADING OVERLAY (hidden by default) -->
+<div class="loading-overlay" id="loading" style="display:none">
+  <span class="spinner"></span>読み込み中...
+</div>
+
+<script>
+  // ===================== CONFIG =====================
+  const API_URL = "https://script.google.com/macros/s/AKfycbwaeq1XgAK3uUEeZzpCWwFB8fvTIhA59eXROdH4r8tgPm3iK2TPiUHehRV8yB2YNFeG/exec";
+  const IMAGE_BASE = "../images/";
+
+  // ===================== STATE =====================
+  let works = [];          // Array of work objects from API
+  let currentIndex = 0;   // Current work index (0-based)
+  let voterName = "";      // Current voter name
+  let scores = {};         // { workId: { c1, c2, c3 } }
+
+  // ===================== INIT =====================
+  window.addEventListener("DOMContentLoaded", () => {
+    // Restore voter name from localStorage
+    const savedName = localStorage.getItem("jc_voter_name");
+    if (savedName) {
+      document.getElementById("voter-name-input").value = savedName;
+    }
+
+    // Restore in-progress scores
+    const savedScores = localStorage.getItem("jc_scores");
+    if (savedScores) {
+      try { scores = JSON.parse(savedScores); } catch(e) { scores = {}; }
+    }
+
+    // Allow pressing Enter in the name field
+    document.getElementById("voter-name-input").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") handleNameSubmit();
+    });
+  });
+
+  // ===================== HELPERS =====================
+  function showLoading(show) {
+    document.getElementById("loading").style.display = show ? "flex" : "none";
+  }
+
+  function showScreen(name) {
+    ["name-screen","voted-screen","scoring-screen","done-screen"].forEach(id => {
+      const el = document.getElementById(id);
+      el.style.display = "none";
+    });
+    const target = document.getElementById(name);
+    target.style.display = "flex";
+  }
+
+  function showError(msg) {
+    const el = document.getElementById("name-error");
+    el.textContent = msg;
+    el.style.display = msg ? "block" : "none";
+  }
+
+  function pf(val) {
+    return (val && val.trim()) ? val.trim() : "—";
+  }
+
+  // ===================== NAME SUBMIT =====================
+  async function handleNameSubmit() {
+    const input = document.getElementById("voter-name-input");
+    const name = input.value.trim();
+
+    if (!name) {
+      showError("お名前を入力してください。");
+      input.focus();
+      return;
+    }
+
+    showError("");
+    document.getElementById("start-btn").disabled = true;
+    showLoading(true);
+
+    try {
+      voterName = name;
+      localStorage.setItem("jc_voter_name", name);
+
+      // Check if already voted
+      const checkUrl = `${API_URL}?action=check&name=${encodeURIComponent(name)}`;
+      const checkRes = await fetch(checkUrl);
+      const checkData = await checkRes.json();
+
+      if (checkData.voted) {
+        showLoading(false);
+        document.getElementById("voted-message").textContent =
+          `${name} さんはすでに投票が完了しています。\nご参加ありがとうございました！`;
+        showScreen("voted-screen");
+        return;
+      }
+
+      // Load works
+      const worksUrl = `${API_URL}?action=works`;
+      const worksRes = await fetch(worksUrl);
+      const worksData = await worksRes.json();
+
+      if (!worksData.works || !Array.isArray(worksData.works) || worksData.works.length === 0) {
+        showLoading(false);
+        showError("作品データの取得に失敗しました。管理者にお問い合わせください。");
+        document.getElementById("start-btn").disabled = false;
+        return;
+      }
+
+      works = worksData.works;
+      currentIndex = 0;
+
+      showLoading(false);
+      showScreen("scoring-screen");
+      renderCurrentWork();
+
+    } catch (err) {
+      showLoading(false);
+      showError("通信エラーが発生しました。接続を確認して再試行してください。");
+      document.getElementById("start-btn").disabled = false;
+      console.error(err);
+    }
+  }
+
+  // ===================== RENDER WORK =====================
+  function renderCurrentWork() {
+    const work = works[currentIndex];
+    if (!work) return;
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // Work header
+    document.getElementById("work-header").textContent =
+      `作品 ${currentIndex + 1} / ${works.length}`;
+
+    // Image
+    const imgEl = document.getElementById("work-image");
+    const imgCol = document.getElementById("image-col");
+
+    if (work.imageFile && work.imageFile.trim()) {
+      imgEl.src = IMAGE_BASE + work.imageFile.trim();
+      imgEl.style.display = "block";
+      // Remove no-image placeholder if present
+      const noImg = imgCol.querySelector(".no-image");
+      if (noImg) noImg.remove();
+    } else {
+      imgEl.style.display = "none";
+      if (!imgCol.querySelector(".no-image")) {
+        const placeholder = document.createElement("div");
+        placeholder.className = "no-image";
+        placeholder.innerHTML = '<div class="no-image-icon">🖼️</div><div>画像なし</div>';
+        imgCol.appendChild(placeholder);
+      }
+    }
+
+    // Profile
+    document.getElementById("pf-name").textContent         = pf(work.characterName);
+    document.getElementById("pf-personality").textContent  = pf(work.personality);
+    document.getElementById("pf-skill").textContent        = pf(work.skill);
+    document.getElementById("pf-place").textContent        = pf(work.favoritePlace);
+    document.getElementById("pf-weakness").textContent     = pf(work.weakness);
+    document.getElementById("pf-food").textContent         = pf(work.favoriteFood);
+    document.getElementById("pf-catchphrase").textContent  = pf(work.catchphrase);
+    document.getElementById("pf-dream").textContent        = pf(work.dream);
+    document.getElementById("pf-extra").textContent         = pf(work.extra);
+
+    // Restore scores for this work
+    const workScore = scores[work.workId] || {};
+    renderScoreButtons("score-c1", 1, workScore.c1);
+    renderScoreButtons("score-c2", 2, workScore.c2);
+    renderScoreButtons("score-c3", 3, workScore.c3);
+    updateTotalScore();
+
+    // Nav buttons
+    document.getElementById("btn-prev").disabled = (currentIndex === 0);
+    document.getElementById("btn-next").disabled = (currentIndex === works.length - 1);
+
+    // Nav indicator
+    document.getElementById("nav-indicator").textContent =
+      `${currentIndex + 1} / ${works.length}`;
+
+    // Progress
+    updateProgress();
+
+    // Submit button
+    updateSubmitVisibility();
+  }
+
+  function renderScoreButtons(containerId, criteriaNum, selectedVal) {
+    const container = document.getElementById(containerId);
+    const btns = container.querySelectorAll(".score-btn");
+    btns.forEach((btn, i) => {
+      const val = i + 1;
+      btn.classList.toggle("selected", val === selectedVal);
+      btn.onclick = () => setScore(criteriaNum, val);
+    });
+  }
+
+  // ===================== SCORE HANDLING =====================
+  function setScore(criteria, val) {
+    const work = works[currentIndex];
+    if (!work) return;
+
+    if (!scores[work.workId]) scores[work.workId] = {};
+    scores[work.workId][`c${criteria}`] = val;
+
+    // Save to localStorage
+    localStorage.setItem("jc_scores", JSON.stringify(scores));
+
+    // Update buttons
+    renderScoreButtons(`score-c${criteria}`, criteria, val);
+    updateTotalScore();
+    updateProgress();
+    updateSubmitVisibility();
+  }
+
+  function updateTotalScore() {
+    const work = works[currentIndex];
+    if (!work) return;
+    const ws = scores[work.workId] || {};
+    const c1 = ws.c1 || 0;
+    const c2 = ws.c2 || 0;
+    const c3 = ws.c3 || 0;
+    const total = c1 + c2 + c3;
+    const el = document.getElementById("total-score-val");
+    if (c1 && c2 && c3) {
+      el.textContent = total;
+    } else {
+      el.textContent = "—";
+    }
+  }
+
+  function getScoredCount() {
+    return works.filter(w => {
+      const ws = scores[w.workId];
+      return ws && ws.c1 && ws.c2 && ws.c3;
+    }).length;
+  }
+
+  function updateProgress() {
+    const done = getScoredCount();
+    const total = works.length;
+    document.getElementById("progress-text").textContent = `${done} / ${total} 作品 採点済み`;
+    const pct = total > 0 ? (done / total * 100) : 0;
+    document.getElementById("progress-fill").style.width = pct + "%";
+  }
+
+  function updateSubmitVisibility() {
+    const allDone = getScoredCount() === works.length && works.length > 0;
+    document.getElementById("submit-area").style.display = allDone ? "block" : "none";
+  }
+
+  // ===================== NAVIGATION =====================
+  function navigate(dir) {
+    const newIdx = currentIndex + dir;
+    if (newIdx < 0 || newIdx >= works.length) return;
+    currentIndex = newIdx;
+    renderCurrentWork();
+  }
+
+  // ===================== MODAL =====================
+  function openModal(src) {
+    if (!src) return;
+    document.getElementById("modal-img").src = src;
+    document.getElementById("img-modal").classList.add("open");
+  }
+
+  function closeModal() {
+    document.getElementById("img-modal").classList.remove("open");
+  }
+
+  // Close modal on Escape
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
+
+  // ===================== SUBMIT =====================
+  async function handleSubmit() {
+    const done = getScoredCount();
+    if (done < works.length) {
+      alert(`まだ採点が完了していない作品があります。（${done} / ${works.length} 作品採点済み）`);
+      return;
+    }
+
+    const confirmed = confirm(
+      `${voterName} さんの投票を送信します。\n` +
+      `全 ${works.length} 作品の採点を送信してよろしいですか？\n\n` +
+      `※送信後は変更できません。`
+    );
+    if (!confirmed) return;
+
+    showLoading(true);
+    document.getElementById("btn-submit").disabled = true;
+
+    try {
+      // Build scores payload
+      const scoresPayload = works.map(w => {
+        const ws = scores[w.workId] || {};
+        return {
+          workId: w.workId,
+          criteria1: ws.c1,
+          criteria2: ws.c2,
+          criteria3: ws.c3,
+        };
+      });
+
+      const payload = {
+        action: "submit",
+        voterName: voterName,
+        scores: scoresPayload,
+      };
+
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        // Clear in-progress scores
+        localStorage.removeItem("jc_scores");
+        showLoading(false);
+        showScreen("done-screen");
+      } else {
+        showLoading(false);
+        document.getElementById("btn-submit").disabled = false;
+        alert("送信に失敗しました。もう一度お試しください。\nエラー: " + (data.error || "不明なエラー"));
+      }
+
+    } catch (err) {
+      showLoading(false);
+      document.getElementById("btn-submit").disabled = false;
+      alert("通信エラーが発生しました。接続を確認して再試行してください。");
+      console.error(err);
+    }
+  }
+</script>
+</body>
+</html>
