@@ -394,6 +394,115 @@
       margin-top: 6px;
     }
 
+    /* ===================== CONFIRM SCREEN ===================== */
+    #confirm-screen {
+      display: none;
+      flex-direction: column;
+      min-height: 100vh;
+      padding: 16px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .confirm-title {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: #4285F4;
+      margin: 16px 0 4px;
+    }
+
+    .confirm-subtitle {
+      text-align: center;
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 16px;
+    }
+
+    .confirm-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+    }
+
+    .confirm-table th {
+      background: #4285F4;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 10px 8px;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .confirm-table td {
+      padding: 8px;
+      font-size: 13px;
+      border-bottom: 1px solid #eee;
+      text-align: center;
+    }
+
+    .confirm-table td:nth-child(2) {
+      text-align: left;
+    }
+
+    .confirm-table tr:last-child td { border-bottom: none; }
+
+    .confirm-table .rank-cell {
+      font-weight: 700;
+      font-size: 15px;
+      color: #333;
+      width: 36px;
+    }
+
+    .confirm-table .rank-top { color: #D4A017; }
+
+    .confirm-table .total-cell {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .confirm-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .btn-back-confirm {
+      flex: 1;
+      background: #fff;
+      color: #666;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 15px;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-back-confirm:hover { border-color: #aaa; color: #333; }
+
+    .btn-submit-confirm {
+      flex: 2;
+      background: #34A853;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 17px;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-submit-confirm:hover { background: #2e9448; }
+    .btn-submit-confirm:disabled { opacity: 0.5; cursor: not-allowed; }
+
     /* ===================== DONE SCREEN ===================== */
     #done-screen {
       display: none;
@@ -618,7 +727,30 @@
   <!-- Submit -->
   <div class="submit-area" id="submit-area">
     <button class="btn-submit" id="btn-submit" onclick="handleSubmit()">投票を送信する</button>
-    <div class="submit-hint">送信前に確認ダイアログが表示されます</div>
+    <div class="submit-hint">採点結果の一覧を確認してから送信できます</div>
+  </div>
+</div>
+
+<!-- CONFIRM SCREEN -->
+<div id="confirm-screen">
+  <div class="confirm-title">採点結果の確認</div>
+  <div class="confirm-subtitle">合計点の高い順に表示しています。内容を確認して送信してください。</div>
+  <table class="confirm-table">
+    <thead>
+      <tr>
+        <th>順位</th>
+        <th>キャラ名</th>
+        <th>①</th>
+        <th>②</th>
+        <th>③</th>
+        <th>合計</th>
+      </tr>
+    </thead>
+    <tbody id="confirm-tbody"></tbody>
+  </table>
+  <div class="confirm-buttons">
+    <button class="btn-back-confirm" onclick="backToScoring()">← 採点に戻る</button>
+    <button class="btn-submit-confirm" id="btn-confirm-submit" onclick="confirmSubmit()">この内容で送信する</button>
   </div>
 </div>
 
@@ -679,7 +811,7 @@
   }
 
   function showScreen(name) {
-    ["name-screen","voted-screen","scoring-screen","done-screen"].forEach(id => {
+    ["name-screen","voted-screen","scoring-screen","confirm-screen","done-screen"].forEach(id => {
       const el = document.getElementById(id);
       el.style.display = "none";
     });
@@ -910,25 +1042,56 @@
   });
 
   // ===================== SUBMIT =====================
-  async function handleSubmit() {
+  function handleSubmit() {
     const done = getScoredCount();
     if (done < works.length) {
       alert(`まだ採点が完了していない作品があります。（${done} / ${works.length} 作品採点済み）`);
       return;
     }
 
-    const confirmed = confirm(
-      `${voterName} さんの投票を送信します。\n` +
-      `全 ${works.length} 作品の採点を送信してよろしいですか？\n\n` +
-      `※送信後は変更できません。`
-    );
-    if (!confirmed) return;
+    // Build ranked list sorted by total score descending
+    const ranked = works.map(w => {
+      const ws = scores[w.id] || {};
+      const c1 = ws.c1 || 0;
+      const c2 = ws.c2 || 0;
+      const c3 = ws.c3 || 0;
+      return { id: w.id, name: w.characterName, c1, c2, c3, total: c1 + c2 + c3 };
+    }).sort((a, b) => {
+      if (b.total !== a.total) return b.total - a.total;
+      return a.id - b.id;
+    });
 
+    // Render confirmation table
+    const tbody = document.getElementById("confirm-tbody");
+    tbody.innerHTML = "";
+    ranked.forEach((r, i) => {
+      const rank = i + 1;
+      const tr = document.createElement("tr");
+      const topClass = rank <= 10 ? " rank-top" : "";
+      tr.innerHTML =
+        `<td class="rank-cell${topClass}">${rank}</td>` +
+        `<td>${r.name}</td>` +
+        `<td>${r.c1}</td>` +
+        `<td>${r.c2}</td>` +
+        `<td>${r.c3}</td>` +
+        `<td class="total-cell">${r.total}</td>`;
+      tbody.appendChild(tr);
+    });
+
+    showScreen("confirm-screen");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function backToScoring() {
+    showScreen("scoring-screen");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  async function confirmSubmit() {
     showLoading(true);
-    document.getElementById("btn-submit").disabled = true;
+    document.getElementById("btn-confirm-submit").disabled = true;
 
     try {
-      // Build scores payload
       const scoresPayload = works.map(w => {
         const ws = scores[w.id] || {};
         return {
@@ -954,19 +1117,18 @@
       const data = await res.json();
 
       if (data.success) {
-        // Clear in-progress scores
         localStorage.removeItem("jc_scores");
         showLoading(false);
         showScreen("done-screen");
       } else {
         showLoading(false);
-        document.getElementById("btn-submit").disabled = false;
+        document.getElementById("btn-confirm-submit").disabled = false;
         alert("送信に失敗しました。もう一度お試しください。\nエラー: " + (data.error || "不明なエラー"));
       }
 
     } catch (err) {
       showLoading(false);
-      document.getElementById("btn-submit").disabled = false;
+      document.getElementById("btn-confirm-submit").disabled = false;
       alert("通信エラーが発生しました。接続を確認して再試行してください。");
       console.error(err);
     }
