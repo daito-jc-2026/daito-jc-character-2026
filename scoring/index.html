@@ -651,7 +651,7 @@
   let works = [];          // Array of work objects from API
   let currentIndex = 0;   // Current work index (0-based)
   let voterName = "";      // Current voter name
-  let scores = {};         // { workId: { c1, c2, c3 } }
+  let scores = {};         // { id: { c1, c2, c3 } }
 
   // ===================== INIT =====================
   window.addEventListener("DOMContentLoaded", () => {
@@ -800,7 +800,7 @@
     document.getElementById("pf-extra").textContent         = pf(work.extra);
 
     // Restore scores for this work
-    const workScore = scores[work.workId] || {};
+    const workScore = scores[work.id] || {};
     renderScoreButtons("score-c1", 1, workScore.c1);
     renderScoreButtons("score-c2", 2, workScore.c2);
     renderScoreButtons("score-c3", 3, workScore.c3);
@@ -836,8 +836,8 @@
     const work = works[currentIndex];
     if (!work) return;
 
-    if (!scores[work.workId]) scores[work.workId] = {};
-    scores[work.workId][`c${criteria}`] = val;
+    if (!scores[work.id]) scores[work.id] = {};
+    scores[work.id][`c${criteria}`] = val;
 
     // Save to localStorage
     localStorage.setItem("jc_scores", JSON.stringify(scores));
@@ -852,7 +852,7 @@
   function updateTotalScore() {
     const work = works[currentIndex];
     if (!work) return;
-    const ws = scores[work.workId] || {};
+    const ws = scores[work.id] || {};
     const c1 = ws.c1 || 0;
     const c2 = ws.c2 || 0;
     const c3 = ws.c3 || 0;
@@ -867,7 +867,7 @@
 
   function getScoredCount() {
     return works.filter(w => {
-      const ws = scores[w.workId];
+      const ws = scores[w.id];
       return ws && ws.c1 && ws.c2 && ws.c3;
     }).length;
   }
@@ -930,9 +930,9 @@
     try {
       // Build scores payload
       const scoresPayload = works.map(w => {
-        const ws = scores[w.workId] || {};
+        const ws = scores[w.id] || {};
         return {
-          workId: w.workId,
+          workId: w.id,
           criteria1: ws.c1,
           criteria2: ws.c2,
           criteria3: ws.c3,
