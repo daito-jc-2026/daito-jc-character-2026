@@ -1365,7 +1365,7 @@
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  async function confirmSubmit() {
+  async function confirmSubmit(overwrite) {
     showLoading(true);
     document.getElementById("btn-confirm-submit").disabled = true;
 
@@ -1385,6 +1385,7 @@
         voterName: voterName,
         scores: scoresPayload,
       };
+      if (overwrite) payload.overwrite = true;
 
       const res = await fetch(API_URL, {
         method: "POST",
@@ -1395,9 +1396,15 @@
       const data = await res.json();
 
       if (data.success) {
-        localStorage.removeItem("jc_scores");
+        localStorage.removeItem("jc_scores_" + voterName);
         showLoading(false);
         showScreen("done-screen");
+      } else if (data.alreadyVoted) {
+        showLoading(false);
+        document.getElementById("btn-confirm-submit").disabled = false;
+        if (confirm("「" + data.voterName + "」はすでに投票済みです。\n採点内容を上書きしますか？")) {
+          confirmSubmit(true);
+        }
       } else {
         showLoading(false);
         document.getElementById("btn-confirm-submit").disabled = false;
