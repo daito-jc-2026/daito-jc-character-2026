@@ -1073,9 +1073,12 @@
   async function startRevote() {
     showLoading(true);
     try {
-      const worksUrl = `${API_URL}?action=works`;
-      const worksRes = await fetch(worksUrl);
+      const [worksRes, scoresRes] = await Promise.all([
+        fetch(`${API_URL}?action=works`),
+        fetch(`${API_URL}?action=myScores&name=${encodeURIComponent(voterName)}`)
+      ]);
       const worksData = await worksRes.json();
+      const scoresData = await scoresRes.json();
 
       if (!worksData.works || !Array.isArray(worksData.works) || worksData.works.length === 0) {
         showLoading(false);
@@ -1085,6 +1088,14 @@
 
       works = worksData.works;
       currentIndex = 0;
+
+      if (scoresData.scores && scoresData.scores.length > 0) {
+        scores = {};
+        scoresData.scores.forEach(s => {
+          scores[s.workId] = { c1: s.c1, c2: s.c2, c3: s.c3 };
+        });
+        localStorage.setItem("jc_scores", JSON.stringify(scores));
+      }
 
       showLoading(false);
       showScreen("scoring-screen");
