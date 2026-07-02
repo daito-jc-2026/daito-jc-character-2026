@@ -599,6 +599,120 @@
 
     .modal-close:hover { opacity: 1; }
 
+    /* ===================== WORK LIST MODAL ===================== */
+    #list-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 900;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    #list-modal.open { display: block; }
+
+    .list-modal-inner {
+      background: #fff;
+      border-radius: 16px;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 20px;
+      position: relative;
+    }
+
+    .list-modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #4A90D9;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .list-modal-close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #888;
+      line-height: 1;
+    }
+
+    .list-modal-close:hover { color: #333; }
+
+    .list-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+      gap: 8px;
+    }
+
+    .list-item {
+      background: #fafafa;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 8px 4px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-size: 11px;
+      line-height: 1.3;
+      word-break: break-all;
+    }
+
+    .list-item:hover {
+      border-color: #4A90D9;
+      background: #f0f6ff;
+    }
+
+    .list-item.current {
+      border-color: #4A90D9;
+      background: #E8F0FE;
+    }
+
+    .list-item.scored {
+      background: #E8F5E9;
+      border-color: #A5D6A7;
+    }
+
+    .list-item.scored.current {
+      border-color: #4A90D9;
+      background: #C8E6C9;
+    }
+
+    .list-item-num {
+      font-size: 13px;
+      font-weight: 700;
+      color: #4A90D9;
+      margin-bottom: 2px;
+    }
+
+    .list-item.scored .list-item-num { color: #388E3C; }
+
+    .list-item-score {
+      font-size: 10px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    .list-btn {
+      display: inline-block;
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 14px;
+      border: 1.5px solid #4A90D9;
+      background: #fff;
+      color: #4A90D9;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    .list-btn:hover {
+      background: #E8F0FE;
+    }
+
     /* ===================== LOADING / ERROR ===================== */
     .loading-overlay {
       position: fixed;
@@ -673,6 +787,7 @@
       <div class="progress-label">
         採点済み：<span id="progress-text">0 / 0 作品</span>
       </div>
+      <button class="list-btn" onclick="openListModal()">一覧</button>
       <button class="filter-toggle" id="filter-unscored" onclick="toggleUnscoredFilter()">未採点のみ</button>
     </div>
     <div class="progress-bar">
@@ -809,6 +924,15 @@
 <div id="img-modal" onclick="closeModal()">
   <span class="modal-close" onclick="closeModal()">✕</span>
   <img src="" alt="拡大画像" id="modal-img" onclick="event.stopPropagation()">
+</div>
+
+<!-- WORK LIST MODAL -->
+<div id="list-modal">
+  <div class="list-modal-inner">
+    <span class="list-modal-close" onclick="closeListModal()">✕</span>
+    <div class="list-modal-title">作品一覧</div>
+    <div class="list-grid" id="list-grid"></div>
+  </div>
 </div>
 
 <!-- LOADING OVERLAY (hidden by default) -->
@@ -1160,6 +1284,41 @@
     if (e.key === "Escape") closeModal();
   });
 
+  // ===================== WORK LIST MODAL =====================
+  function openListModal() {
+    const grid = document.getElementById("list-grid");
+    grid.innerHTML = "";
+
+    works.forEach((w, i) => {
+      const div = document.createElement("div");
+      div.className = "list-item";
+      if (i === currentIndex) div.classList.add("current");
+      if (isScored(w)) div.classList.add("scored");
+
+      const ws = scores[w.id] || {};
+      const total = (ws.c1 || 0) + (ws.c2 || 0) + (ws.c3 || 0);
+      const scoreText = isScored(w) ? `${total}点` : "未採点";
+
+      div.innerHTML =
+        `<div class="list-item-num">${i + 1}</div>` +
+        `<div>${w.characterName || "—"}</div>` +
+        `<div class="list-item-score">${scoreText}</div>`;
+
+      div.onclick = () => {
+        currentIndex = i;
+        closeListModal();
+        renderCurrentWork();
+      };
+      grid.appendChild(div);
+    });
+
+    document.getElementById("list-modal").classList.add("open");
+  }
+
+  function closeListModal() {
+    document.getElementById("list-modal").classList.remove("open");
+  }
+
   // ===================== SUBMIT =====================
   function handleSubmit() {
     const done = getScoredCount();
@@ -1229,7 +1388,7 @@
 
       const res = await fetch(API_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(payload),
       });
 
