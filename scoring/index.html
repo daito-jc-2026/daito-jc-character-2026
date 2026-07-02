@@ -109,7 +109,21 @@
 
     .voted-card .icon { font-size: 48px; margin-bottom: 16px; }
     .voted-card h2 { font-size: 20px; margin-bottom: 12px; color: #333; }
-    .voted-card p { font-size: 14px; color: #666; }
+    .voted-card p { font-size: 14px; color: #666; margin-bottom: 20px; }
+
+    .btn-revote {
+      background: #fff;
+      color: #4A90D9;
+      border: 2px solid #4A90D9;
+      border-radius: 8px;
+      padding: 11px 28px;
+      font-size: 15px;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-revote:hover { background: #4A90D9; color: #fff; }
 
     /* ===================== SCORING SCREEN ===================== */
     #scoring-screen {
@@ -776,6 +790,7 @@
     <div class="icon">✅</div>
     <h2>投票済みです</h2>
     <p id="voted-message">すでに投票が完了しています。<br>ご参加ありがとうございました！</p>
+    <button class="btn-revote" onclick="startRevote()">採点し直す</button>
   </div>
 </div>
 
@@ -1050,6 +1065,34 @@
       showLoading(false);
       showError("通信エラーが発生しました。接続を確認して再試行してください。");
       document.getElementById("start-btn").disabled = false;
+      console.error(err);
+    }
+  }
+
+  // ===================== REVOTE =====================
+  async function startRevote() {
+    showLoading(true);
+    try {
+      const worksUrl = `${API_URL}?action=works`;
+      const worksRes = await fetch(worksUrl);
+      const worksData = await worksRes.json();
+
+      if (!worksData.works || !Array.isArray(worksData.works) || worksData.works.length === 0) {
+        showLoading(false);
+        alert("作品データの取得に失敗しました。");
+        return;
+      }
+
+      works = worksData.works;
+      currentIndex = 0;
+      scores = {};
+
+      showLoading(false);
+      showScreen("scoring-screen");
+      renderCurrentWork();
+    } catch (err) {
+      showLoading(false);
+      alert("通信エラーが発生しました。");
       console.error(err);
     }
   }
