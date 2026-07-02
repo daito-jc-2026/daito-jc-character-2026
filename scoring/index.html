@@ -1085,7 +1085,6 @@
 
       works = worksData.works;
       currentIndex = 0;
-      scores = {};
 
       showLoading(false);
       showScreen("scoring-screen");
@@ -1439,7 +1438,6 @@
       const data = await res.json();
 
       if (data.success) {
-        localStorage.removeItem("jc_scores_" + voterName);
         showLoading(false);
         showScreen("done-screen");
       } else if (data.alreadyVoted) {
