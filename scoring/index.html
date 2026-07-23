@@ -837,54 +837,14 @@
       </div>
     </div>
 
-    <!-- Scoring section -->
+    <!-- Scoring section（評価項目は CRITERIA 定義から生成） -->
     <div class="scoring-section">
-      <!-- Criteria 1 -->
-      <div class="criteria-group">
-        <div class="criteria-label">① JC・地域適合性</div>
-        <div class="criteria-desc">大東市やJCらしさが表現されているか</div>
-        <div class="score-buttons" id="score-c1">
-          <button class="score-btn" onclick="setScore(1,1)">1</button>
-          <button class="score-btn" onclick="setScore(1,2)">2</button>
-          <button class="score-btn" onclick="setScore(1,3)">3</button>
-          <button class="score-btn" onclick="setScore(1,4)">4</button>
-          <button class="score-btn" onclick="setScore(1,5)">5</button>
-        </div>
-        <div class="score-hints"><span>関連が薄い</span><span>一部感じる</span><span>大東市らしさが明確</span></div>
-      </div>
-
-      <!-- Criteria 2 -->
-      <div class="criteria-group">
-        <div class="criteria-label">② 独創性</div>
-        <div class="criteria-desc">オリジナリティのある発想・デザイン・設定か</div>
-        <div class="score-buttons" id="score-c2">
-          <button class="score-btn" onclick="setScore(2,1)">1</button>
-          <button class="score-btn" onclick="setScore(2,2)">2</button>
-          <button class="score-btn" onclick="setScore(2,3)">3</button>
-          <button class="score-btn" onclick="setScore(2,4)">4</button>
-          <button class="score-btn" onclick="setScore(2,5)">5</button>
-        </div>
-        <div class="score-hints"><span>ありがち</span><span>工夫あり</span><span>驚きがある</span></div>
-      </div>
-
-      <!-- Criteria 3 -->
-      <div class="criteria-group">
-        <div class="criteria-label">③ 第一印象・親しみやすさ</div>
-        <div class="criteria-desc">幅広い世代に愛されそうか</div>
-        <div class="score-buttons" id="score-c3">
-          <button class="score-btn" onclick="setScore(3,1)">1</button>
-          <button class="score-btn" onclick="setScore(3,2)">2</button>
-          <button class="score-btn" onclick="setScore(3,3)">3</button>
-          <button class="score-btn" onclick="setScore(3,4)">4</button>
-          <button class="score-btn" onclick="setScore(3,5)">5</button>
-        </div>
-        <div class="score-hints"><span>印象に残りにくい</span><span>悪くない</span><span>一目で好感</span></div>
-      </div>
+      <div id="criteria-container"></div>
 
       <!-- Total -->
       <div class="total-score">
         合計：<span class="score-val" id="total-score-val">—</span>
-        <span class="score-max">/ 15点</span>
+        <span class="score-max" id="total-score-max">/ 25点</span>
       </div>
     </div>
   </div>
@@ -915,6 +875,8 @@
         <th>①</th>
         <th>②</th>
         <th>③</th>
+        <th>④</th>
+        <th>⑤</th>
         <th>合計</th>
       </tr>
     </thead>
@@ -960,11 +922,44 @@
   const API_URL = "https://script.google.com/macros/s/AKfycbwaeq1XgAK3uUEeZzpCWwFB8fvTIhA59eXROdH4r8tgPm3iK2TPiUHehRV8yB2YNFeG/exec";
   const IMAGE_BASE = "../images/";
 
+  // ===================== 評価項目（第2回審査：5項目）=====================
+  const CRITERIA = [
+    { key: "c1", mark: "①", label: "JC・地域適合性",
+      desc: "JCの理念や地域のイメージが表現されているか",
+      hints: ["関連が薄い", "一部感じる", "大東市らしさが明確"] },
+    { key: "c2", mark: "②", label: "独創性",
+      desc: "独創性があるか",
+      hints: ["ありがち", "工夫あり", "驚きがある"] },
+    { key: "c3", mark: "③", label: "第一印象・親しみやすさ",
+      desc: "市民が見てポジティブな印象を持たれるか",
+      hints: ["印象に残りにくい", "悪くない", "一目で好感"] },
+    { key: "c4", mark: "④", label: "完成度",
+      desc: "デザインとしてのバランス等",
+      hints: ["粗さが目立つ", "まとまりあり", "完成度が高い"] },
+    { key: "c5", mark: "⑤", label: "展開力",
+      desc: "単色印刷の可否、看板、着ぐるみ化などが可能か",
+      hints: ["展開しにくい", "工夫すれば可", "幅広く展開できる"] }
+  ];
+  const MAX_TOTAL = CRITERIA.length * 5;
+
+  // 途中保存キー（第1回の3項目データを引き継がないよう回ごとに分ける）
+  const SCORES_KEY = "jc_scores_r2";
+
   // ===================== STATE =====================
   let works = [];          // Array of work objects from API
   let currentIndex = 0;   // Current work index (0-based)
   let voterName = "";      // Current voter name
-  let scores = {};         // { id: { c1, c2, c3 } }
+  let scores = {};         // { id: { c1..c5 } }
+
+  // 採点が全項目そろっているか
+  function isComplete(ws) {
+    return !!ws && CRITERIA.every(c => ws[c.key]);
+  }
+  // 合計点
+  function sumScore(ws) {
+    if (!ws) return 0;
+    return CRITERIA.reduce((t, c) => t + (ws[c.key] || 0), 0);
+  }
 
   // ===================== INIT =====================
   window.addEventListener("DOMContentLoaded", () => {
@@ -975,7 +970,7 @@
     }
 
     // Restore in-progress scores
-    const savedScores = localStorage.getItem("jc_scores");
+    const savedScores = localStorage.getItem(SCORES_KEY);
     if (savedScores) {
       try { scores = JSON.parse(savedScores); } catch(e) { scores = {}; }
     }
@@ -1092,9 +1087,11 @@
       if (scoresData.scores && scoresData.scores.length > 0) {
         scores = {};
         scoresData.scores.forEach(s => {
-          scores[s.workId] = { c1: s.c1, c2: s.c2, c3: s.c3 };
+          const ws = {};
+          CRITERIA.forEach(c => { if (s[c.key]) ws[c.key] = s[c.key]; });
+          scores[s.workId] = ws;
         });
-        localStorage.setItem("jc_scores", JSON.stringify(scores));
+        localStorage.setItem(SCORES_KEY, JSON.stringify(scores));
       }
 
       showLoading(false);
@@ -1111,6 +1108,9 @@
   function renderCurrentWork() {
     const work = works[currentIndex];
     if (!work) return;
+
+    // 評価項目UIを生成（初回のみ）
+    buildCriteriaUI();
 
     // Scroll to top
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1152,9 +1152,7 @@
 
     // Restore scores for this work
     const workScore = scores[work.id] || {};
-    renderScoreButtons("score-c1", 1, workScore.c1);
-    renderScoreButtons("score-c2", 2, workScore.c2);
-    renderScoreButtons("score-c3", 3, workScore.c3);
+    CRITERIA.forEach(c => renderScoreButtons(`score-${c.key}`, c.key, workScore[c.key]));
     updateTotalScore();
 
     // Nav buttons & indicator
@@ -1179,29 +1177,49 @@
     updateSubmitVisibility();
   }
 
-  function renderScoreButtons(containerId, criteriaNum, selectedVal) {
+  // 評価項目のUIを CRITERIA 定義から生成（初回のみ）
+  function buildCriteriaUI() {
+    const container = document.getElementById("criteria-container");
+    if (!container || container.dataset.built === "1") return;
+    container.innerHTML = CRITERIA.map(c => `
+      <div class="criteria-group">
+        <div class="criteria-label">${c.mark} ${c.label}</div>
+        <div class="criteria-desc">${c.desc}</div>
+        <div class="score-buttons" id="score-${c.key}">
+          ${[1,2,3,4,5].map(v => `<button class="score-btn">${v}</button>`).join("")}
+        </div>
+        <div class="score-hints">${c.hints.map(h => `<span>${h}</span>`).join("")}</div>
+      </div>
+    `).join("");
+    container.dataset.built = "1";
+    const maxEl = document.getElementById("total-score-max");
+    if (maxEl) maxEl.textContent = `/ ${MAX_TOTAL}点`;
+  }
+
+  function renderScoreButtons(containerId, criteriaKey, selectedVal) {
     const container = document.getElementById(containerId);
+    if (!container) return;
     const btns = container.querySelectorAll(".score-btn");
     btns.forEach((btn, i) => {
       const val = i + 1;
       btn.classList.toggle("selected", val === selectedVal);
-      btn.onclick = () => setScore(criteriaNum, val);
+      btn.onclick = () => setScore(criteriaKey, val);
     });
   }
 
   // ===================== SCORE HANDLING =====================
-  function setScore(criteria, val) {
+  function setScore(criteriaKey, val) {
     const work = works[currentIndex];
     if (!work) return;
 
     if (!scores[work.id]) scores[work.id] = {};
-    scores[work.id][`c${criteria}`] = val;
+    scores[work.id][criteriaKey] = val;
 
     // Save to localStorage
-    localStorage.setItem("jc_scores", JSON.stringify(scores));
+    localStorage.setItem(SCORES_KEY, JSON.stringify(scores));
 
     // Update buttons
-    renderScoreButtons(`score-c${criteria}`, criteria, val);
+    renderScoreButtons(`score-${criteriaKey}`, criteriaKey, val);
     updateTotalScore();
     updateProgress();
     updateSubmitVisibility();
@@ -1222,23 +1240,12 @@
     const work = works[currentIndex];
     if (!work) return;
     const ws = scores[work.id] || {};
-    const c1 = ws.c1 || 0;
-    const c2 = ws.c2 || 0;
-    const c3 = ws.c3 || 0;
-    const total = c1 + c2 + c3;
     const el = document.getElementById("total-score-val");
-    if (c1 && c2 && c3) {
-      el.textContent = total;
-    } else {
-      el.textContent = "—";
-    }
+    el.textContent = isComplete(ws) ? sumScore(ws) : "—";
   }
 
   function getScoredCount() {
-    return works.filter(w => {
-      const ws = scores[w.id];
-      return ws && ws.c1 && ws.c2 && ws.c3;
-    }).length;
+    return works.filter(w => isComplete(scores[w.id])).length;
   }
 
   function updateProgress() {
@@ -1258,8 +1265,7 @@
   let unscoredOnly = false;
 
   function isScored(w) {
-    const ws = scores[w.id];
-    return ws && ws.c1 && ws.c2 && ws.c3;
+    return isComplete(scores[w.id]);
   }
 
   function getUnscoredIndices() {
@@ -1348,9 +1354,7 @@
       if (i === currentIndex) div.classList.add("current");
       if (isScored(w)) div.classList.add("scored");
 
-      const ws = scores[w.id] || {};
-      const total = (ws.c1 || 0) + (ws.c2 || 0) + (ws.c3 || 0);
-      const scoreText = isScored(w) ? `${total}点` : "未採点";
+      const scoreText = isScored(w) ? `${sumScore(scores[w.id])}点` : "未採点";
 
       div.innerHTML =
         `<div class="list-item-num">${i + 1}</div>` +
@@ -1383,10 +1387,8 @@
     // Build ranked list sorted by total score descending
     const ranked = works.map(w => {
       const ws = scores[w.id] || {};
-      const c1 = ws.c1 || 0;
-      const c2 = ws.c2 || 0;
-      const c3 = ws.c3 || 0;
-      return { id: w.id, name: w.characterName, c1, c2, c3, total: c1 + c2 + c3 };
+      const vals = CRITERIA.map(c => ws[c.key] || 0);
+      return { id: w.id, name: w.characterName, vals, total: sumScore(ws) };
     }).sort((a, b) => {
       if (b.total !== a.total) return b.total - a.total;
       return a.id - b.id;
@@ -1398,13 +1400,11 @@
     ranked.forEach((r, i) => {
       const rank = i + 1;
       const tr = document.createElement("tr");
-      const topClass = rank <= 10 ? " rank-top" : "";
+      const topClass = rank <= 3 ? " rank-top" : "";
       tr.innerHTML =
         `<td class="rank-cell${topClass}">${rank}</td>` +
         `<td>${r.name}</td>` +
-        `<td>${r.c1}</td>` +
-        `<td>${r.c2}</td>` +
-        `<td>${r.c3}</td>` +
+        r.vals.map(v => `<td>${v}</td>`).join("") +
         `<td class="total-cell">${r.total}</td>`;
       tbody.appendChild(tr);
     });
@@ -1425,12 +1425,9 @@
     try {
       const scoresPayload = works.map(w => {
         const ws = scores[w.id] || {};
-        return {
-          workId: w.id,
-          criteria1: ws.c1,
-          criteria2: ws.c2,
-          criteria3: ws.c3,
-        };
+        const item = { workId: w.id };
+        CRITERIA.forEach((c, i) => { item[`criteria${i + 1}`] = ws[c.key]; });
+        return item;
       });
 
       const payload = {

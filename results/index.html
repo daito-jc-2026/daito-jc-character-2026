@@ -468,6 +468,8 @@
               <th>適合性</th>
               <th>独創性</th>
               <th>親しみ</th>
+              <th>完成度</th>
+              <th>展開力</th>
               <th>合計</th>
             </tr>
           </thead>
@@ -643,20 +645,13 @@
         tdName.textContent = row.characterName || "";
         tr.appendChild(tdName);
 
-        // 適合性
-        const tdC1 = document.createElement("td");
-        tdC1.textContent = Number(row.avgCriteria1).toFixed(1);
-        tr.appendChild(tdC1);
-
-        // 独創性
-        const tdC2 = document.createElement("td");
-        tdC2.textContent = Number(row.avgCriteria2).toFixed(1);
-        tr.appendChild(tdC2);
-
-        // 親しみ
-        const tdC3 = document.createElement("td");
-        tdC3.textContent = Number(row.avgCriteria3).toFixed(1);
-        tr.appendChild(tdC3);
+        // 評価5項目（適合性・独創性・親しみ・完成度・展開力）
+        [row.avgCriteria1, row.avgCriteria2, row.avgCriteria3,
+         row.avgCriteria4, row.avgCriteria5].forEach(v => {
+          const td = document.createElement("td");
+          td.textContent = Number(v || 0).toFixed(1);
+          tr.appendChild(td);
+        });
 
         // 合計
         const tdTotal = document.createElement("td");
@@ -672,16 +667,19 @@
     csvBtn.addEventListener("click", () => {
       if (!currentResults || currentResults.length === 0) return;
 
-      const headers = ["順位", "作品ID", "キャラクター名", "JC・地域適合性", "独創性", "第一印象・親しみやすさ", "合計"];
+      const headers = ["順位", "作品ID", "キャラクター名", "JC・地域適合性", "独創性",
+                       "第一印象・親しみやすさ", "完成度", "展開力", "合計"];
 
       const rows = currentResults.map(r => [
         r.rank,
         r.workId,
         r.characterName || "",
-        Number(r.avgCriteria1).toFixed(1),
-        Number(r.avgCriteria2).toFixed(1),
-        Number(r.avgCriteria3).toFixed(1),
-        Number(r.totalAvg).toFixed(1)
+        Number(r.avgCriteria1 || 0).toFixed(1),
+        Number(r.avgCriteria2 || 0).toFixed(1),
+        Number(r.avgCriteria3 || 0).toFixed(1),
+        Number(r.avgCriteria4 || 0).toFixed(1),
+        Number(r.avgCriteria5 || 0).toFixed(1),
+        Number(r.totalAvg || 0).toFixed(1)
       ]);
 
       const csvContent = [headers, ...rows]
