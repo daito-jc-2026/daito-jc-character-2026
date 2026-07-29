@@ -145,12 +145,27 @@
     font-size: 12.5px; line-height: 1.7; margin-bottom: 6px; color: #333;
     padding-left: 4px; border-left: 3px solid var(--hot); padding: 2px 0 2px 9px;
   }
-  .cm-mem { font-size: 12px; line-height: 1.65; margin-bottom: 7px; color: #444; }
-  .cm-who {
-    display: inline-block; font-weight: 700; color: var(--ink);
-    background: var(--gold); border-radius: 4px;
-    padding: 1px 6px; margin-right: 5px; font-size: 11px; white-space: nowrap;
+  .cm-mem {
+    font-size: 12.5px; line-height: 1.7; margin-bottom: 8px; color: #444;
+    padding-left: 15px; position: relative;
   }
+  .cm-mem::before {
+    content: '●'; position: absolute; left: 0; top: 0;
+    color: var(--gold); font-size: 10px; line-height: 1.9;
+    text-shadow: 0 0 1px rgba(0,0,0,.35);
+  }
+  .cm-mem:last-child { margin-bottom: 0; }
+
+  /* 確認画面の作品カード（クリック不可） */
+  .work.rv { cursor: default; }
+  .work.rv:hover { transform: none; box-shadow: 3px 3px 0 var(--ink); }
+
+  /* 投票画面の作品カード */
+  .vt-hint {
+    text-align: center; font-size: 12px; font-weight: 700; color: #888;
+    padding: 4px 0 12px;
+  }
+  .work.sel .vt-hint { color: var(--hot); }
 
   /* 共通コメント */
   .note-box {
@@ -234,13 +249,13 @@
     </div>
   </div>
 
-  <!-- 作品選択 -->
-  <div class="screen" id="s-vote">
-    <div class="guide">いちばん良いと思う作品を<b>1つ</b>タップしてください</div>
+  <!-- ① 内容の確認 -->
+  <div class="screen" id="s-review">
+    <div class="guide">まず、最終候補<b>3作品</b>の内容をご覧ください</div>
 
     <div class="note-box">
       <h3>📋 7月28日 選考会議より</h3>
-      <p>各作品には、選考会議でのイラストレーター 菊澤先生と審査員のコメントを掲載しています。ご参考になさってください。</p>
+      <p>各作品には、選考会議での審査員とイラストレーター 菊澤先生のコメントを掲載しています。ご参考になさってください。</p>
       <p><b>グッズ展開（単色印刷など）について</b><br>
         菊澤先生「色がメインの作品は単色印刷で工夫が必要になりますが、封筒や名刺などで小さく使う場合は『顔のアップだけを使う』『マーク化する』などの工夫で、どの作品も十分に対応可能です。」</p>
       <p><b>着ぐるみ化（立体化）について</b><br>
@@ -249,9 +264,20 @@
         審査員の共通認識として「応募原案の良さを尊重しつつ、決定後にハッピを着せたり、設定や説明文で大東市やJCの要素を補強・調整していけばよい」という意見でまとまりました。</p>
     </div>
 
+    <div id="reviews"></div>
+
+    <div class="submit-area">
+      <button class="btn" id="btn-to-vote">内容を確認しました　投票にすすむ →</button>
+    </div>
+  </div>
+
+  <!-- ② 作品選択・投票 -->
+  <div class="screen" id="s-vote">
+    <div class="guide">いちばん良いと思う作品を<b>1つ</b>タップしてください</div>
     <div id="works"></div>
     <div class="submit-area">
       <button class="btn" id="btn-vote" disabled>この作品に投票する</button>
+      <button class="btn btn-sub" id="btn-back-review">← 内容の確認にもどる</button>
     </div>
   </div>
 
@@ -305,6 +331,8 @@ window.addEventListener("DOMContentLoaded", () => {
   $("name").addEventListener("keydown", e => { if (e.key === "Enter") start(); });
   $("btn-start").addEventListener("click", start);
   $("btn-revote").addEventListener("click", () => loadWorks(true));
+  $("btn-to-vote").addEventListener("click", () => show("s-vote"));
+  $("btn-back-review").addEventListener("click", () => show("s-review"));
   $("btn-vote").addEventListener("click", vote);
   $("modal-x").addEventListener("click", closeModal);
   $("imgmodal").addEventListener("click", e => { if (e.target === e.currentTarget) closeModal(); });
@@ -362,9 +390,10 @@ async function loadWorks(isRevote) {
     }
     works = d.works;
     selected = null;
+    renderReview();
     render();
     loading(false);
-    show("s-vote");
+    show("s-review");   // まず内容の確認画面へ
   } catch (e) {
     loading(false);
     alert("通信エラーが発生しました。");
@@ -376,42 +405,42 @@ async function loadWorks(isRevote) {
 const COMMENTS = {
   49: {
     motif: "飯盛山、三好長慶ゆかりのサンゴジュ、菊の花の形をしたリュックなど、大東市の要素がふんだんに盛り込まれています。応募時から細かく設定が作り込まれた作品です。",
+    members: [
+      "大東市の要素（菊、サンゴジュ、頭部の飯盛山）が一番わかりやすく盛り込まれていて、最も「大東市らしさ」が伝わってくる。完成度が高く、展開した際のイメージが非常に湧きやすい。",
+      "完成度で言えば間違いなく「いいもりん」。色使いやフォルムの完成度が高く評価できる。",
+      "完成度が高く、今後の運用や展開がやりやすい作品。",
+      "飯盛山をはじめとする地域の要素が凝縮されていて、大東市を盛り上げようという意図が一番伝わってくる。完成度の高さだけでなく、大東市をアピールする姿勢が素晴らしい。"
+    ],
     pro: [
       "設定もイラストも完成度が非常に高くて、表情も柔らかい感じ。小道具まで完璧やなと思って見ていました。",
       "このまま使いやすい（描きやすい・動かしやすい）ですね。リュックを外したりといった応用も利くし、素晴らしいと思います。"
-    ],
-    members: [
-      ["山田副理事長", "大東市の要素（菊、サンゴジュ、頭部の飯盛山）が一番わかりやすく盛り込まれていて、最も「大東市らしさ」が伝わってくる。完成度が高く、展開した際のイメージが非常に湧きやすい。"],
-      ["井上副理事長", "完成度で言えば間違いなく「いいもりん」。色使いやフォルムの完成度が高く評価できる。"],
-      ["樋口副理事長", "完成度が高く、今後の運用や展開がやりやすい作品。"],
-      ["田中直前理事長", "飯盛山をはじめとする地域の要素が凝縮されていて、大東市を盛り上げようという意図が一番伝わってくる。完成度の高さだけでなく、大東市をアピールする姿勢が素晴らしい。"]
     ]
   },
   59: {
     motif: "犬（柴犬）をモチーフにしたキャラクター。大東市の地図の形（地形）が「犬の形」に見えたことからインスピレーションを受けて描かれています。尻尾がサンゴジュになっており、菊の花もあしらわれています。",
+    members: [
+      "大人の目では気づかない「大東市の形が犬に見えた」という子供らしいひらめきと想像力が素晴らしい。菊やサンゴジュの要素も入っており、JCの活動文脈でも語りやすいストーリーがある。",
+      "犬というベースの設定があり、装飾品で大東市らしさを出しているので、状況に応じていじりやすく使い勝手が良い。",
+      "大東市の形から生まれたワンちゃんという物語があり、アニメやCM、広報などでイメージしやすい。覚えてもらいやすく、少し調整を加えることでさらに完成度が高まる伸び代がある。"
+    ],
     pro: [
       "大東市といえば菊などに目がいきがちですが、「市の地形の形」をモチーフにするという見方・発想が素晴らしい。",
       "モチーフは柴犬と書かれていますが、野崎観音の狛犬も連想させられます。",
       "メインキャラとしても良いですが、メインキャラクターの脇を固める「お供」として非常に良い役割を果たせる。そうしたポジションも含めてよく考えられています。"
-    ],
-    members: [
-      ["安田理事長", "大人の目では気づかない「大東市の形が犬に見えた」という子供らしいひらめきと想像力が素晴らしい。菊やサンゴジュの要素も入っており、JCの活動文脈でも語りやすいストーリーがある。"],
-      ["井上副理事長", "犬というベースの設定があり、装飾品で大東市らしさを出しているので、状況に応じていじりやすく使い勝手が良い。"],
-      ["田中直前理事長", "大東市の形から生まれたワンちゃんという物語があり、アニメやCM、広報などでイメージしやすい。覚えてもらいやすく、少し調整を加えることでさらに完成度が高まる伸び代がある。"]
     ]
   },
   48: {
     motif: "「大東市（だいとうし）」と「豆腐（とうふ）」をかけた親しみやすいネーミング。野崎観音ゆかり（参道周辺の豆腐店や地域文化など）の要素を背景に持つ作品です。",
+    members: [
+      "大東市と豆腐をかけたコンセプトがすごく好き。愛嬌があり、キャラクター化・立体化した時に一番可愛くなると思う。弱点がある（豆腐だから崩れやすい）という設定も可愛い。",
+      "JC（青年会議所）の公式キャラクターとしてイメージした時に、こういった愛され系のキャラクターは非常に馴染みやすい。",
+      "ダジャレから入っている点について地域要素を問われることもあるかもしれないが、応援キャラクターとしてはシンプルで一番親しみやすい。",
+      "キャラクターとしての「いじりやすさ・面白さ」を評価。"
+    ],
     pro: [
       "これを見た時に思わず笑ってしまうほどネーミングが最高。「弱そうなヒーロー」というコンセプトが非常に面白い。",
       "「俺に任せろ」と言いながら「お願い（助けて）」と頼んでいるギャップや、重さに耐えられなさそうな雰囲気が豆腐らしくて愛くるしい。",
       "大東の豆腐を中心に、他の食材や地域特産品とのコラボレーションなど、楽しさを広げていきやすいキャラクター。"
-    ],
-    members: [
-      ["山田副理事長", "大東市と豆腐をかけたコンセプトがすごく好き。愛嬌があり、キャラクター化・立体化した時に一番可愛くなると思う。弱点がある（豆腐だから崩れやすい）という設定も可愛い。"],
-      ["樋口副理事長", "JC（青年会議所）の公式キャラクターとしてイメージした時に、こういった愛され系のキャラクターは非常に馴染みやすい。"],
-      ["田中直前理事長", "ダジャレから入っている点について地域要素を問われることもあるかもしれないが、応援キャラクターとしてはシンプルで一番親しみやすい。"],
-      ["井上副理事長", "キャラクターとしての「いじりやすさ・面白さ」を評価。"]
     ]
   }
 };
@@ -422,9 +451,10 @@ const FIELDS = [
   ["dream","夢・目標"], ["extra","もっとおしえて"]
 ];
 
-function render() {
-  $("works").innerHTML = works.map(w => `
-    <div class="work" data-id="${w.id}">
+// ① 確認画面：絵・プロフィール・コメントをすべて表示（選択はしない）
+function renderReview() {
+  $("reviews").innerHTML = works.map(w => `
+    <div class="work rv">
       <div class="work-img"><img src="${IMG_BASE}${esc(w.imageFile)}" alt="${esc(w.characterName)}" data-zoom="${IMG_BASE}${esc(w.imageFile)}"></div>
       <div class="work-name">${esc(w.characterName)}</div>
       <div class="zoom-hint">絵をタップすると拡大できます</div>
@@ -434,10 +464,25 @@ function render() {
       </table>
       ${commentHtml(w.id)}
     </div>`).join("");
+  bindZoom();
+}
 
-  document.querySelectorAll(".work").forEach(el => {
+// ② 投票画面：選択に集中できるコンパクト表示
+function render() {
+  $("works").innerHTML = works.map(w => `
+    <div class="work vt" data-id="${w.id}">
+      <div class="work-img"><img src="${IMG_BASE}${esc(w.imageFile)}" alt="${esc(w.characterName)}" data-zoom="${IMG_BASE}${esc(w.imageFile)}"></div>
+      <div class="work-name">${esc(w.characterName)}</div>
+      <div class="vt-hint">タップして選択</div>
+    </div>`).join("");
+
+  document.querySelectorAll(".work.vt").forEach(el => {
     el.addEventListener("click", () => select(Number(el.dataset.id)));
   });
+  bindZoom();
+}
+
+function bindZoom() {
   document.querySelectorAll("[data-zoom]").forEach(img => {
     img.addEventListener("click", e => {
       e.stopPropagation();
@@ -455,13 +500,12 @@ function commentHtml(id) {
     <div class="cm">
       <div class="cm-motif">${esc(c.motif)}</div>
       <div class="cm-block">
-        <div class="cm-h cm-h-pro">イラストレーター 菊澤先生</div>
-        ${c.pro.map(t => `<p class="cm-pro">「${esc(t)}」</p>`).join("")}
+        <div class="cm-h">審査員のコメント</div>
+        ${c.members.map(t => `<p class="cm-mem">${esc(t)}</p>`).join("")}
       </div>
       <div class="cm-block">
-        <div class="cm-h">審査員のコメント</div>
-        ${c.members.map(([who, t]) =>
-          `<p class="cm-mem"><span class="cm-who">${esc(who)}</span>${esc(t)}</p>`).join("")}
+        <div class="cm-h cm-h-pro">イラストレーター 菊澤先生</div>
+        ${c.pro.map(t => `<p class="cm-pro">「${esc(t)}」</p>`).join("")}
       </div>
     </div>`;
 }
