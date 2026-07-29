@@ -84,6 +84,25 @@
 
   .err { color: #D32F2F; font-size: 13px; margin-top: 10px; display: none; font-weight: 600; }
 
+  /* ===== 選んだ作品の確認 ===== */
+  .chosen-box {
+    background: var(--paper); border: 2.5px solid var(--ink); border-radius: 12px;
+    padding: 11px 12px 12px; margin-bottom: 18px;
+  }
+  .chosen-label {
+    font-size: 11px; font-weight: 800; color: #777;
+    text-align: center; margin-bottom: 8px; letter-spacing: .5px;
+  }
+  .chosen-work { display: flex; align-items: center; gap: 12px; }
+  .chosen-work img {
+    width: 76px; height: 76px; object-fit: contain; background: #fff;
+    border: 2px solid var(--ink); border-radius: 8px; flex-shrink: 0;
+  }
+  .chosen-name {
+    font-size: 19px; font-weight: 800; color: var(--hot);
+    text-shadow: 1px 1px 0 var(--ink); text-align: left; line-height: 1.3;
+  }
+
   /* ===== 作品カード ===== */
   .guide {
     text-align: center; font-size: 14px; font-weight: 700;
@@ -196,16 +215,6 @@
     background: rgba(255,255,255,.55); border-radius: 8px; padding: 9px 11px;
   }
 
-  /* 共通コメント */
-  .note-box {
-    background: #fff; border: 2.5px solid var(--ink); border-radius: 12px;
-    padding: 14px 16px; margin-bottom: 16px; box-shadow: 3px 3px 0 var(--ink);
-  }
-  .note-box h3 { font-size: 14px; margin-bottom: 8px; }
-  .note-box p { font-size: 12px; line-height: 1.7; margin-bottom: 8px; color: #444; }
-  .note-box p:last-child { margin-bottom: 0; }
-  .note-box b { color: var(--hot); }
-
   .submit-area { position: sticky; bottom: 0; background: var(--paper);
                  padding: 14px 0 18px; margin-top: 4px; }
 
@@ -255,31 +264,8 @@
 
 <div class="wrap">
 
-  <!-- 名前入力 -->
-  <div class="screen active" id="s-name">
-    <div class="card">
-      <h2>お名前をご入力ください</h2>
-      <p class="lead">お一人1票です。投票内容の確認・変更のために使用します。</p>
-      <input type="text" id="name" placeholder="お名前（例：森元）" maxlength="30" autocomplete="off">
-      <button class="btn" id="btn-start" disabled>投票にすすむ</button>
-      <div class="err" id="err-name"></div>
-    </div>
-  </div>
-
-  <!-- 投票済み -->
-  <div class="screen" id="s-voted">
-    <div class="card done">
-      <div class="ic">✅</div>
-      <h2>投票済みです</h2>
-      <p><span id="voted-name"></span>さんは、すでに投票が完了しています。</p>
-      <div class="chosen" id="voted-work"></div>
-      <p>投票内容を変更する場合は、下のボタンから選び直せます。</p>
-      <button class="btn btn-sub" id="btn-revote">投票し直す</button>
-    </div>
-  </div>
-
   <!-- ① 内容の確認 -->
-  <div class="screen" id="s-review">
+  <div class="screen active" id="s-review">
     <div class="guide">まず、最終候補<b>3作品</b>の内容をご覧ください</div>
 
     <div class="intro-box">
@@ -300,17 +286,6 @@
          <b>「このキャラクターと一緒に活動したい」</b>と思える作品をお選びください。</p>
     </div>
 
-    <div class="note-box">
-      <h3>📋 7月28日 選考会議より</h3>
-      <p>各作品には、選考会議での審査員とイラストレーター 菊澤先生のコメントを掲載しています。ご参考になさってください。</p>
-      <p><b>グッズ展開（単色印刷など）について</b><br>
-        菊澤先生「色がメインの作品は単色印刷で工夫が必要になりますが、封筒や名刺などで小さく使う場合は『顔のアップだけを使う』『マーク化する』などの工夫で、どの作品も十分に対応可能です。」</p>
-      <p><b>着ぐるみ化（立体化）について</b><br>
-        菊澤先生「平面のデザインと立体のデザインは考え方が異なるため、専門家と相談して進めます。『立体にしにくいから』と候補から外すのではなく、平面のデザインをいかに面白く立体化するかを考えるのも制作の醍醐味です。」</p>
-      <p><b>大東市らしさ・JCらしさの補強について</b><br>
-        審査員の共通認識として「応募原案の良さを尊重しつつ、決定後にハッピを着せたり、設定や説明文で大東市やJCの要素を補強・調整していけばよい」という意見でまとまりました。</p>
-    </div>
-
     <div id="reviews"></div>
 
     <div class="submit-area">
@@ -318,13 +293,34 @@
     </div>
   </div>
 
-  <!-- ② 作品選択・投票 -->
+  <!-- ② 作品選択 -->
   <div class="screen" id="s-vote">
     <div class="guide">いちばん良いと思う作品を<b>1つ</b>タップしてください</div>
     <div id="works"></div>
     <div class="submit-area">
       <button class="btn" id="btn-vote" disabled>この作品に投票する</button>
       <button class="btn btn-sub" id="btn-back-review">← 内容の確認にもどる</button>
+    </div>
+  </div>
+
+  <!-- ③ お名前の入力・投票の確定 -->
+  <div class="screen" id="s-name">
+    <div class="card">
+      <h2>お名前をご入力ください</h2>
+      <p class="lead">お一人1票です。投票内容の確認・変更のために使用します。</p>
+
+      <div class="chosen-box">
+        <div class="chosen-label">あなたが選んだ作品</div>
+        <div class="chosen-work">
+          <img src="" alt="" id="pick-img">
+          <div class="chosen-name" id="pick-name"></div>
+        </div>
+      </div>
+
+      <input type="text" id="name" placeholder="お名前（例：森元）" maxlength="30" autocomplete="off">
+      <button class="btn" id="btn-submit" disabled>この内容で投票する</button>
+      <button class="btn btn-sub" id="btn-back-vote">← 作品を選びなおす</button>
+      <div class="err" id="err-name"></div>
     </div>
   </div>
 
@@ -368,26 +364,28 @@ const has = v => {
   return t !== "" && !["-", "ー", "−", "—"].includes(t);
 };
 
-// ===== 起動 =====
+// ===== 起動：作品を読み込んで確認画面を表示 =====
 window.addEventListener("DOMContentLoaded", () => {
   const saved = localStorage.getItem(NAME_KEY);
   if (saved) $("name").value = saved;
-  toggleStart();
+  toggleSubmit();
 
-  $("name").addEventListener("input", toggleStart);
-  $("name").addEventListener("keydown", e => { if (e.key === "Enter") start(); });
-  $("btn-start").addEventListener("click", start);
-  $("btn-revote").addEventListener("click", () => loadWorks(true));
+  $("name").addEventListener("input", toggleSubmit);
+  $("name").addEventListener("keydown", e => { if (e.key === "Enter") vote(); });
   $("btn-to-vote").addEventListener("click", () => show("s-vote"));
   $("btn-back-review").addEventListener("click", () => show("s-review"));
-  $("btn-vote").addEventListener("click", vote);
+  $("btn-vote").addEventListener("click", toNameStep);
+  $("btn-back-vote").addEventListener("click", () => show("s-vote"));
+  $("btn-submit").addEventListener("click", () => vote());
   $("modal-x").addEventListener("click", closeModal);
   $("imgmodal").addEventListener("click", e => { if (e.target === e.currentTarget) closeModal(); });
   document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+  loadWorks();
 });
 
-function toggleStart() {
-  $("btn-start").disabled = !$("name").value.trim();
+function toggleSubmit() {
+  $("btn-submit").disabled = !$("name").value.trim();
 }
 
 function showErr(msg) {
@@ -396,43 +394,28 @@ function showErr(msg) {
   el.style.display = msg ? "block" : "none";
 }
 
-// ===== 名前送信 → 投票済みチェック =====
-async function start() {
-  const name = $("name").value.trim();
-  if (!name) { showErr("お名前を入力してください。"); return; }
-
+// ===== 作品選択 → お名前入力へ =====
+function toNameStep() {
+  if (!selected) return;
+  const w = works.find(x => x.id === selected);
+  if (!w) return;
+  $("pick-img").src = IMG_BASE + w.imageFile;
+  $("pick-img").alt = w.characterName;
+  $("pick-name").textContent = w.characterName;
   showErr("");
-  voterName = name;
-  localStorage.setItem(NAME_KEY, name);
-  loading(true);
-
-  try {
-    const r = await fetch(`${API}?action=finalCheck&name=${encodeURIComponent(name)}`);
-    const d = await r.json();
-    if (d.voted) {
-      loading(false);
-      $("voted-name").textContent = name;
-      $("voted-work").textContent = d.characterName || "";
-      show("s-voted");
-      return;
-    }
-    await loadWorks(false);
-  } catch (e) {
-    loading(false);
-    showErr("通信エラーが発生しました。電波の良い場所で再度お試しください。");
-    console.error(e);
-  }
+  show("s-name");
+  $("name").focus();
 }
 
 // ===== 作品読み込み =====
-async function loadWorks(isRevote) {
+async function loadWorks() {
   loading(true);
   try {
     const r = await fetch(`${API}?action=finalWorks`);
     const d = await r.json();
     if (!d.works || !d.works.length) {
       loading(false);
-      alert("作品データの取得に失敗しました。");
+      alert("作品データの取得に失敗しました。時間をおいて再度お試しください。");
       return;
     }
     works = d.works;
@@ -443,7 +426,7 @@ async function loadWorks(isRevote) {
     show("s-review");   // まず内容の確認画面へ
   } catch (e) {
     loading(false);
-    alert("通信エラーが発生しました。");
+    alert("通信エラーが発生しました。電波の良い場所で再度お開きください。");
     console.error(e);
   }
 }
@@ -568,17 +551,28 @@ function select(id) {
   $("btn-vote").textContent = `「${w.characterName}」に投票する`;
 }
 
-// ===== 投票送信 =====
+// ===== 投票送信（お名前入力後）=====
 async function vote(overwrite) {
   if (!selected) return;
   const w = works.find(x => x.id === selected);
+  if (!w) return;
+
+  const name = $("name").value.trim();
+  if (!name) {
+    showErr("お名前を入力してください。");
+    $("name").focus();
+    return;
+  }
+  showErr("");
+  voterName = name;
+  localStorage.setItem(NAME_KEY, name);
 
   if (overwrite !== true) {
-    if (!confirm(`「${w.characterName}」に投票します。\nよろしいですか？`)) return;
+    if (!confirm(`${name} さんの1票を「${w.characterName}」に投じます。\nよろしいですか？`)) return;
   }
 
   loading(true);
-  $("btn-vote").disabled = true;
+  $("btn-submit").disabled = true;
 
   try {
     const payload = { action: "finalVote", voterName, workId: selected };
@@ -596,13 +590,13 @@ async function vote(overwrite) {
       if (confirm(`${voterName} さんはすでに「${d.previous}」に投票済みです。\n「${w.characterName}」に変更しますか？`)) {
         vote(true);
       } else {
-        $("btn-vote").disabled = false;
+        $("btn-submit").disabled = false;
       }
       return;
     }
     if (d.error) {
       alert("エラー: " + d.error);
-      $("btn-vote").disabled = false;
+      $("btn-submit").disabled = false;
       return;
     }
     if (d.success) {
@@ -611,11 +605,11 @@ async function vote(overwrite) {
       return;
     }
     alert("予期しない応答がありました。もう一度お試しください。");
-    $("btn-vote").disabled = false;
+    $("btn-submit").disabled = false;
   } catch (e) {
     loading(false);
     alert("通信エラーが発生しました。もう一度お試しください。");
-    $("btn-vote").disabled = false;
+    $("btn-submit").disabled = false;
     console.error(e);
   }
 }
