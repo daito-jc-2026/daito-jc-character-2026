@@ -127,6 +127,41 @@
 
   .zoom-hint { text-align:center; font-size:11px; color:#999; padding-bottom:10px; }
 
+  /* ===== 選考会議でのコメント ===== */
+  .cm { border-top: 2px dashed var(--ink); background: #FFFDF5; padding: 14px 14px 12px; }
+  .cm-motif {
+    font-size: 12.5px; line-height: 1.7; background: #fff;
+    border: 1.5px solid #E0D6B0; border-radius: 8px; padding: 10px 12px; margin-bottom: 12px;
+  }
+  .cm-block { margin-bottom: 12px; }
+  .cm-block:last-child { margin-bottom: 0; }
+  .cm-h {
+    font-size: 11.5px; font-weight: 800; letter-spacing: .5px;
+    padding: 4px 10px; border-radius: 12px; display: inline-block; margin-bottom: 7px;
+    background: var(--ink); color: #fff;
+  }
+  .cm-h-pro { background: var(--hot); }
+  .cm-pro {
+    font-size: 12.5px; line-height: 1.7; margin-bottom: 6px; color: #333;
+    padding-left: 4px; border-left: 3px solid var(--hot); padding: 2px 0 2px 9px;
+  }
+  .cm-mem { font-size: 12px; line-height: 1.65; margin-bottom: 7px; color: #444; }
+  .cm-who {
+    display: inline-block; font-weight: 700; color: var(--ink);
+    background: var(--gold); border-radius: 4px;
+    padding: 1px 6px; margin-right: 5px; font-size: 11px; white-space: nowrap;
+  }
+
+  /* 共通コメント */
+  .note-box {
+    background: #fff; border: 2.5px solid var(--ink); border-radius: 12px;
+    padding: 14px 16px; margin-bottom: 16px; box-shadow: 3px 3px 0 var(--ink);
+  }
+  .note-box h3 { font-size: 14px; margin-bottom: 8px; }
+  .note-box p { font-size: 12px; line-height: 1.7; margin-bottom: 8px; color: #444; }
+  .note-box p:last-child { margin-bottom: 0; }
+  .note-box b { color: var(--hot); }
+
   .submit-area { position: sticky; bottom: 0; background: var(--paper);
                  padding: 14px 0 18px; margin-top: 4px; }
 
@@ -202,6 +237,18 @@
   <!-- 作品選択 -->
   <div class="screen" id="s-vote">
     <div class="guide">いちばん良いと思う作品を<b>1つ</b>タップしてください</div>
+
+    <div class="note-box">
+      <h3>📋 7月28日 選考会議より</h3>
+      <p>各作品には、選考会議でのイラストレーター 菊澤先生と審査員のコメントを掲載しています。ご参考になさってください。</p>
+      <p><b>グッズ展開（単色印刷など）について</b><br>
+        菊澤先生「色がメインの作品は単色印刷で工夫が必要になりますが、封筒や名刺などで小さく使う場合は『顔のアップだけを使う』『マーク化する』などの工夫で、どの作品も十分に対応可能です。」</p>
+      <p><b>着ぐるみ化（立体化）について</b><br>
+        菊澤先生「平面のデザインと立体のデザインは考え方が異なるため、専門家と相談して進めます。『立体にしにくいから』と候補から外すのではなく、平面のデザインをいかに面白く立体化するかを考えるのも制作の醍醐味です。」</p>
+      <p><b>大東市らしさ・JCらしさの補強について</b><br>
+        審査員の共通認識として「応募原案の良さを尊重しつつ、決定後にハッピを着せたり、設定や説明文で大東市やJCの要素を補強・調整していけばよい」という意見でまとまりました。</p>
+    </div>
+
     <div id="works"></div>
     <div class="submit-area">
       <button class="btn" id="btn-vote" disabled>この作品に投票する</button>
@@ -325,6 +372,50 @@ async function loadWorks(isRevote) {
   }
 }
 
+// ===== 7/28 選考会議でのコメント =====
+const COMMENTS = {
+  49: {
+    motif: "飯盛山、三好長慶ゆかりのサンゴジュ、菊の花の形をしたリュックなど、大東市の要素がふんだんに盛り込まれています。応募時から細かく設定が作り込まれた作品です。",
+    pro: [
+      "設定もイラストも完成度が非常に高くて、表情も柔らかい感じ。小道具まで完璧やなと思って見ていました。",
+      "このまま使いやすい（描きやすい・動かしやすい）ですね。リュックを外したりといった応用も利くし、素晴らしいと思います。"
+    ],
+    members: [
+      ["山田副理事長", "大東市の要素（菊、サンゴジュ、頭部の飯盛山）が一番わかりやすく盛り込まれていて、最も「大東市らしさ」が伝わってくる。完成度が高く、展開した際のイメージが非常に湧きやすい。"],
+      ["井上副理事長", "完成度で言えば間違いなく「いいもりん」。色使いやフォルムの完成度が高く評価できる。"],
+      ["樋口副理事長", "完成度が高く、今後の運用や展開がやりやすい作品。"],
+      ["田中直前理事長", "飯盛山をはじめとする地域の要素が凝縮されていて、大東市を盛り上げようという意図が一番伝わってくる。完成度の高さだけでなく、大東市をアピールする姿勢が素晴らしい。"]
+    ]
+  },
+  59: {
+    motif: "犬（柴犬）をモチーフにしたキャラクター。大東市の地図の形（地形）が「犬の形」に見えたことからインスピレーションを受けて描かれています。尻尾がサンゴジュになっており、菊の花もあしらわれています。",
+    pro: [
+      "大東市といえば菊などに目がいきがちですが、「市の地形の形」をモチーフにするという見方・発想が素晴らしい。",
+      "モチーフは柴犬と書かれていますが、野崎観音の狛犬も連想させられます。",
+      "メインキャラとしても良いですが、メインキャラクターの脇を固める「お供」として非常に良い役割を果たせる。そうしたポジションも含めてよく考えられています。"
+    ],
+    members: [
+      ["安田理事長", "大人の目では気づかない「大東市の形が犬に見えた」という子供らしいひらめきと想像力が素晴らしい。菊やサンゴジュの要素も入っており、JCの活動文脈でも語りやすいストーリーがある。"],
+      ["井上副理事長", "犬というベースの設定があり、装飾品で大東市らしさを出しているので、状況に応じていじりやすく使い勝手が良い。"],
+      ["田中直前理事長", "大東市の形から生まれたワンちゃんという物語があり、アニメやCM、広報などでイメージしやすい。覚えてもらいやすく、少し調整を加えることでさらに完成度が高まる伸び代がある。"]
+    ]
+  },
+  48: {
+    motif: "「大東市（だいとうし）」と「豆腐（とうふ）」をかけた親しみやすいネーミング。野崎観音ゆかり（参道周辺の豆腐店や地域文化など）の要素を背景に持つ作品です。",
+    pro: [
+      "これを見た時に思わず笑ってしまうほどネーミングが最高。「弱そうなヒーロー」というコンセプトが非常に面白い。",
+      "「俺に任せろ」と言いながら「お願い（助けて）」と頼んでいるギャップや、重さに耐えられなさそうな雰囲気が豆腐らしくて愛くるしい。",
+      "大東の豆腐を中心に、他の食材や地域特産品とのコラボレーションなど、楽しさを広げていきやすいキャラクター。"
+    ],
+    members: [
+      ["山田副理事長", "大東市と豆腐をかけたコンセプトがすごく好き。愛嬌があり、キャラクター化・立体化した時に一番可愛くなると思う。弱点がある（豆腐だから崩れやすい）という設定も可愛い。"],
+      ["樋口副理事長", "JC（青年会議所）の公式キャラクターとしてイメージした時に、こういった愛され系のキャラクターは非常に馴染みやすい。"],
+      ["田中直前理事長", "ダジャレから入っている点について地域要素を問われることもあるかもしれないが、応援キャラクターとしてはシンプルで一番親しみやすい。"],
+      ["井上副理事長", "キャラクターとしての「いじりやすさ・面白さ」を評価。"]
+    ]
+  }
+};
+
 const FIELDS = [
   ["personality","性格"], ["skill","特技"], ["favoritePlace","好きな場所"],
   ["weakness","弱点"], ["favoriteFood","好きな食べ物"], ["catchphrase","口癖"],
@@ -341,6 +432,7 @@ function render() {
         ${FIELDS.filter(([k]) => has(w[k]))
           .map(([k,l]) => `<tr><td>${l}</td><td>${esc(w[k])}</td></tr>`).join("")}
       </table>
+      ${commentHtml(w.id)}
     </div>`).join("");
 
   document.querySelectorAll(".work").forEach(el => {
@@ -353,6 +445,25 @@ function render() {
       $("imgmodal").classList.add("on");
     });
   });
+}
+
+// 選考会議でのコメント
+function commentHtml(id) {
+  const c = COMMENTS[id];
+  if (!c) return "";
+  return `
+    <div class="cm">
+      <div class="cm-motif">${esc(c.motif)}</div>
+      <div class="cm-block">
+        <div class="cm-h cm-h-pro">イラストレーター 菊澤先生</div>
+        ${c.pro.map(t => `<p class="cm-pro">「${esc(t)}」</p>`).join("")}
+      </div>
+      <div class="cm-block">
+        <div class="cm-h">審査員のコメント</div>
+        ${c.members.map(([who, t]) =>
+          `<p class="cm-mem"><span class="cm-who">${esc(who)}</span>${esc(t)}</p>`).join("")}
+      </div>
+    </div>`;
 }
 
 function closeModal() { $("imgmodal").classList.remove("on"); }
