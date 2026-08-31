@@ -3,16 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>大東JC 公式キャラクター ファイナリスト発表！— 全応募作品公開</title>
-<meta name="description" content="大東青年会議所（大東JC）創立55周年記念 公式キャラクターコンテスト。ファイナリスト発表＆全67作品を公開中！">
-<meta property="og:title" content="大東JC 公式キャラクター ファイナリスト発表！">
-<meta property="og:description" content="ファイナリスト発表＆全67作品を公開中！">
+<title>大東JC 公式キャラクター 最優秀賞 決定！</title>
+<meta name="description" content="大東青年会議所（大東JC）創立55周年記念 公式キャラクターコンテスト。67作品の中から最優秀賞「いいもりん」が決まりました！">
+<meta property="og:title" content="大東JC 公式キャラクター 最優秀賞 決定！">
+<meta property="og:description" content="67作品の中から最優秀賞が決まりました！">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ja_JP">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Hachi+Maru+Pop&family=Yusei+Magic&family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
 <style>
+
   :root {
     --paper: #FFF8E1;
     --paper-2: #FFE9B0;
@@ -408,6 +409,189 @@
   .footer-info a { color: var(--hot); text-decoration: none; }
   .footer-info a:hover { text-decoration: underline; }
 
+
+  /* ===== 最優秀賞 ===== */
+  .grand { background: linear-gradient(180deg, #FFF1C4 0%, var(--paper) 100%); }
+  .grand-card {
+    background: #fff;
+    border: 4px solid var(--ink);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 6px 6px 0 var(--gold), 6px 6px 0 2px var(--ink);
+    margin-top: 18px;
+  }
+  .grand-ribbon {
+    background: var(--ink);
+    color: var(--gold);
+    font-family: 'Mochiy Pop One', sans-serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-align: center;
+    padding: 9px 8px;
+  }
+  .grand-img-wrap {
+    background: #fff;
+    padding: 16px 14px 6px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+  .grand-img-wrap img { max-height: 380px; width: auto; max-width: 100%; border-radius: 10px; }
+  .grand-name {
+    font-family: 'Mochiy Pop One', sans-serif;
+    font-size: 30px;
+    text-align: center;
+    padding: 6px 12px 2px;
+    line-height: 1.25;
+    color: var(--hot);
+    text-shadow: -1.5px -1.5px 0 var(--ink), 1.5px -1.5px 0 var(--ink), -1.5px 1.5px 0 var(--ink), 1.5px 1.5px 0 var(--ink), 3px 3px 0 var(--ink);
+  }
+  .grand-sub {
+    text-align: center;
+    font-size: 11px;
+    color: rgba(0,0,0,0.6);
+    padding: 6px 14px 12px;
+    line-height: 1.6;
+  }
+  .grand-body { padding: 0 14px 18px; }
+
+  .sub-head {
+    font-family: 'Mochiy Pop One', sans-serif;
+    font-size: 12.5px;
+    margin: 20px 0 8px;
+    padding-left: 8px;
+    border-left: 5px solid var(--hot);
+    line-height: 1.4;
+  }
+
+  /* 見どころカード */
+  .points { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  .point {
+    background: var(--paper);
+    border: 2.5px solid var(--ink);
+    border-radius: 12px;
+    padding: 9px 10px;
+    box-shadow: 2.5px 2.5px 0 var(--ink);
+  }
+  .point .p-icon { font-size: 19px; line-height: 1; }
+  .point .p-t {
+    font-family: 'Mochiy Pop One', sans-serif;
+    font-size: 11.5px;
+    margin: 5px 0 3px;
+    color: var(--hot);
+  }
+  .point .p-d { font-size: 10.5px; line-height: 1.55; color: rgba(0,0,0,0.75); }
+
+  /* 色チップ */
+  .colors { display: flex; gap: 7px; margin-top: 8px; flex-wrap: wrap; }
+  .color-chip {
+    flex: 1 1 68px;
+    border: 2.5px solid var(--ink);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 2px 2px 0 var(--ink);
+    background: #fff;
+    text-align: center;
+  }
+  .color-chip .swatch { height: 22px; border-bottom: 2px solid var(--ink); }
+  .color-chip .c-l { font-size: 10px; padding: 5px 2px; font-weight: 700; line-height: 1.4; }
+
+  /* コメント吹き出し */
+  .quote {
+    background: #fff;
+    border: 2.5px solid var(--ink);
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 11.5px;
+    line-height: 1.7;
+    margin-bottom: 9px;
+    box-shadow: 2.5px 2.5px 0 rgba(0,0,0,0.12);
+  }
+  .quote.pro { background: #EAF6FF; }
+  .quote-src {
+    display: block;
+    margin-top: 5px;
+    font-size: 10px;
+    color: rgba(0,0,0,0.5);
+    text-align: right;
+  }
+
+  /* 優秀賞 2枚 */
+  .runner-list { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 18px; }
+  .runner-card {
+    background: #fff;
+    border: 3px solid var(--ink);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .runner-ribbon {
+    background: var(--paper-2);
+    border-bottom: 2.5px solid var(--ink);
+    font-family: 'Mochiy Pop One', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-align: center;
+    padding: 6px 8px;
+  }
+  .runner-img-wrap { background: #fff; border-bottom: 2.5px solid var(--ink); padding: 10px; display: flex; justify-content: center; }
+  .runner-img-wrap img { max-height: 260px; width: auto; max-width: 100%; border-radius: 8px; }
+  .runner-name {
+    font-family: 'Mochiy Pop One', sans-serif;
+    font-size: 19px; text-align: center; padding: 10px 12px 2px;
+    color: var(--hot); text-shadow: 1px 1px 0 var(--ink);
+  }
+  .runner-body { padding: 6px 12px 14px; }
+  .runner-motif { font-size: 11px; line-height: 1.7; color: rgba(0,0,0,0.75); margin: 6px 0 0; }
+
+  /* 選考のながれ */
+  .funnel { margin-top: 16px; }
+  .funnel-step {
+    background: #fff;
+    border: 2.5px solid var(--ink);
+    border-radius: 12px;
+    box-shadow: 3px 3px 0 var(--ink);
+    padding: 9px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .funnel-step .f-n {
+    font-family: 'Mochiy Pop One', sans-serif;
+    font-size: 20px;
+    color: var(--hot);
+    text-shadow: 1px 1px 0 var(--ink);
+    min-width: 74px;
+    line-height: 1.1;
+  }
+  .funnel-step .f-d { font-size: 10.5px; line-height: 1.55; }
+  .funnel-arrow { text-align: center; font-size: 15px; color: var(--ink); padding: 3px 0; }
+  .funnel-step.win { background: var(--gold); }
+
+  /* 予告ボックス */
+  .coming {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 16px;
+    padding: 18px 16px;
+    text-align: center;
+    margin-top: 16px;
+  }
+  .coming .c-t {
+    font-family: 'Mochiy Pop One', sans-serif;
+    font-size: 17px;
+    color: var(--gold);
+    line-height: 1.4;
+  }
+  .coming .c-d { font-size: 11.5px; line-height: 1.8; margin-top: 9px; }
+  .coming ruby rt { color: rgba(255,255,255,0.6); }
+
+  .backlink {
+    display: block; text-align: center; margin-top: 16px;
+    font-size: 11.5px; font-weight: 700; color: var(--hot);
+  }
+
+  /* happyou.html 用バナー */
   .result-banner {
     display: block;
     background: var(--hot);
@@ -422,9 +606,11 @@
     letter-spacing: 0.5px;
   }
   .result-banner span { display: block; font-family: 'Zen Maru Gothic', sans-serif; font-size: 11px; font-weight: 700; margin-top: 3px; opacity: 0.9; }
+
 </style>
 </head>
 <body>
+
 <header class="brand-bar">
   <div class="brand-name">
     <ruby>一般社団法人<rt>いっぱんしゃだんほうじん</rt></ruby><br>
@@ -433,45 +619,114 @@
   <div class="brand-badge">DAITO JC · 55th</div>
 </header>
 
-<a class="result-banner" href="kekka/">▶ 最優秀賞が決まりました！<span>67作品の中から選ばれた1作品を見る</span></a>
-
 <main>
   <section class="hero" aria-label="ヒーロー">
     <p class="hero-lead">
       <span class="yr"><ruby>大東<rt>だいとう</rt></ruby>JC 55<ruby>周年<rt>しゅうねん</rt></ruby><ruby>記念<rt>きねん</rt></ruby></span>　<ruby>公式<rt>こうしき</rt></ruby>キャラクターコンテスト
     </p>
-    <h1 class="hero-title">ファイナリスト<br><ruby>発表<rt>はっぴょう</rt></ruby>！</h1>
-    <p class="hero-thanks">なんと <b>67<ruby>作品<rt>さくひん</rt></ruby></b> のご<ruby>応募<rt>おうぼ</rt></ruby>が<ruby>集<rt>あつ</rt></ruby>まりました！<br>たくさんのご<ruby>応募<rt>おうぼ</rt></ruby>、<ruby>本当<rt>ほんとう</rt></ruby>にありがとう！</p>
-  </section>
-
-  <section class="finalists" aria-labelledby="finalists-heading">
-    <h2 class="tag red" id="finalists-heading">🏆 ファイナリスト</h2>
-    <p class="section-note">
-      <ruby>厳正<rt>げんせい</rt></ruby>な<ruby>審査<rt>しんさ</rt></ruby>の<ruby>結果<rt>けっか</rt></ruby>、ファイナリストに<ruby>選<rt>えら</rt></ruby>ばれた<ruby>作品<rt>さくひん</rt></ruby>を<ruby>紹介<rt>しょうかい</rt></ruby>します！（<ruby>順不同<rt>じゅんふどう</rt></ruby>）<br>
-      この<ruby>中<rt>なか</rt></ruby>から<b><ruby>最優秀賞<rt>さいゆうしゅうしょう</rt></ruby></b>が<ruby>決<rt>き</rt></ruby>まりました！ → <a href="kekka/"><b><ruby>結果<rt>けっか</rt></ruby>を<ruby>見<rt>み</rt></ruby>る</b></a>
+    <h1 class="hero-title"><ruby>最優秀賞<rt>さいゆうしゅうしょう</rt></ruby><br><ruby>決定<rt>けってい</rt></ruby>！</h1>
+    <p class="hero-thanks">
+      <b>67<ruby>作品<rt>さくひん</rt></ruby></b>の<ruby>中<rt>なか</rt></ruby>から、<br>
+      <ruby>大東<rt>だいとう</rt></ruby>JCメンバー<ruby>全員<rt>ぜんいん</rt></ruby>の<ruby>投票<rt>とうひょう</rt></ruby>で<ruby>選<rt>えら</rt></ruby>ばれました！<br>
+      ご<ruby>応募<rt>おうぼ</rt></ruby>いただいたみなさん、<br><ruby>本当<rt>ほんとう</rt></ruby>にありがとうございました。
     </p>
-    <div class="finalist-list" id="finalist-list"></div>
   </section>
 
-  <section class="gallery alt" aria-labelledby="gallery-heading">
-    <h2 class="tag" id="gallery-heading">🎨 <ruby>全<rt>ぜん</rt></ruby><ruby>応募<rt>おうぼ</rt></ruby><ruby>作品<rt>さくひん</rt></ruby></h2>
+  <!-- ② 最優秀賞 -->
+  <section class="grand" aria-labelledby="grand-heading">
+    <h2 class="tag red" id="grand-heading">👑 <ruby>最優秀賞<rt>さいゆうしゅうしょう</rt></ruby></h2>
+
+    <div class="grand-card">
+      <div class="grand-ribbon">★ GRAND PRIZE ★</div>
+      <div class="grand-img-wrap">
+        <img src="../images/49.JPG" alt="いいもりん">
+      </div>
+      <div class="grand-name">いいもりん</div>
+
+      <div class="grand-body">
+        <h3 class="sub-head">プロフィール</h3>
+        <table class="profile-table" id="grand-profile"></table>
+
+        <h3 class="sub-head">デザインの<ruby>見<rt>み</rt></ruby>どころ</h3>
+        <div class="points">
+          <div class="point"><div class="p-icon">⛰️</div><div class="p-t"><ruby>飯盛山<rt>いいもりやま</rt></ruby>の<ruby>帽子<rt>ぼうし</rt></ruby></div><div class="p-d"><ruby>大東市<rt>だいとうし</rt></ruby>のシンボル、<ruby>飯盛山<rt>いいもりやま</rt></ruby>の<ruby>形<rt>かたち</rt></ruby>をした<ruby>帽子<rt>ぼうし</rt></ruby>。</div></div>
+          <div class="point"><div class="p-icon">🌿</div><div class="p-t">さんごじゅの<ruby>実<rt>み</rt></ruby></div><div class="p-d"><ruby>市<rt>し</rt></ruby>の<ruby>木<rt>き</rt></ruby>「さんごじゅ」の<ruby>赤<rt>あか</rt></ruby>い<ruby>実<rt>み</rt></ruby>のかざり。</div></div>
+          <div class="point"><div class="p-icon">🌼</div><div class="p-t"><ruby>菊<rt>きく</rt></ruby>のリュック</div><div class="p-d"><ruby>市<rt>し</rt></ruby>の<ruby>花<rt>はな</rt></ruby>「<ruby>菊<rt>きく</rt></ruby>」の<ruby>形<rt>かたち</rt></ruby>をしたリュック。</div></div>
+          <div class="point"><div class="p-icon">🍙</div><div class="p-t">おにぎり</div><div class="p-d"><ruby>飯盛山<rt>いいもりやま</rt></ruby>にハイキング。<ruby>大好物<rt>だいこうぶつ</rt></ruby>のおにぎりを<ruby>手<rt>て</rt></ruby>に。</div></div>
+        </div>
+
+        <h3 class="sub-head"><ruby>色<rt>いろ</rt></ruby>にも<ruby>意味<rt>いみ</rt></ruby>があります</h3>
+        <div class="colors">
+          <div class="color-chip"><div class="swatch" style="background:#3FA34D"></div><div class="c-l"><ruby>緑<rt>みどり</rt></ruby><br><ruby>山<rt>やま</rt></ruby></div></div>
+          <div class="color-chip"><div class="swatch" style="background:#3B82C4"></div><div class="c-l"><ruby>青<rt>あお</rt></ruby><br><ruby>川<rt>かわ</rt></ruby></div></div>
+          <div class="color-chip"><div class="swatch" style="background:#E2453C"></div><div class="c-l"><ruby>赤<rt>あか</rt></ruby><br><ruby>太陽<rt>たいよう</rt></ruby></div></div>
+          <div class="color-chip"><div class="swatch" style="background:#F2C231"></div><div class="c-l"><ruby>黄<rt>き</rt></ruby><br><ruby>菊<rt>きく</rt></ruby></div></div>
+        </div>
+
+        <h3 class="sub-head"><ruby>審査員<rt>しんさいん</rt></ruby>のコメント</h3>
+        <div id="grand-comments"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ③ 優秀賞 -->
+  <section class="runners alt" aria-labelledby="runners-heading">
+    <h2 class="tag" id="runners-heading">🏅 <ruby>優秀賞<rt>ゆうしゅうしょう</rt></ruby></h2>
+    <p class="section-note">
+      <ruby>最終<rt>さいしゅう</rt></ruby><ruby>候補<rt>こうほ</rt></ruby>3<ruby>作品<rt>さくひん</rt></ruby>に<ruby>残<rt>のこ</rt></ruby>った<ruby>作品<rt>さくひん</rt></ruby>です。<br>
+      どちらも<ruby>審査員<rt>しんさいん</rt></ruby>から<ruby>高<rt>たか</rt></ruby>い<ruby>評価<rt>ひょうか</rt></ruby>を<ruby>受<rt>う</rt></ruby>けました。（<ruby>順不同<rt>じゅんふどう</rt></ruby>）
+    </p>
+    <div class="runner-list" id="runner-list"></div>
+  </section>
+
+  <!-- ④ 選考のながれ -->
+  <section class="flow" aria-labelledby="flow-heading">
+    <h2 class="tag red" id="flow-heading">🔍 <ruby>選考<rt>せんこう</rt></ruby>のながれ</h2>
+    <p class="section-note">
+      たくさんの<ruby>大人<rt>おとな</rt></ruby>が、<ruby>一枚<rt>いちまい</rt></ruby><ruby>一枚<rt>いちまい</rt></ruby>を<ruby>真剣<rt>しんけん</rt></ruby>に<ruby>見<rt>み</rt></ruby>て<ruby>選<rt>えら</rt></ruby>びました。
+    </p>
+    <div class="funnel">
+      <div class="funnel-step"><div class="f-n">67<ruby>作品<rt>さくひん</rt></ruby></div><div class="f-d">ご<ruby>応募<rt>おうぼ</rt></ruby>いただいた<ruby>全<rt>ぜん</rt></ruby><ruby>作品<rt>さくひん</rt></ruby></div></div>
+      <div class="funnel-arrow">▼ メンバー15<ruby>名<rt>めい</rt></ruby>が3<ruby>項目<rt>こうもく</rt></ruby>で<ruby>採点<rt>さいてん</rt></ruby></div>
+      <div class="funnel-step"><div class="f-n">10<ruby>作品<rt>さくひん</rt></ruby></div><div class="f-d">ファイナリスト</div></div>
+      <div class="funnel-arrow">▼ <ruby>理事<rt>りじ</rt></ruby>6<ruby>名<rt>めい</rt></ruby>＋イラストレーターの<ruby>選考会議<rt>せんこうかいぎ</rt></ruby></div>
+      <div class="funnel-step"><div class="f-n">3<ruby>作品<rt>さくひん</rt></ruby></div><div class="f-d"><ruby>最終<rt>さいしゅう</rt></ruby><ruby>候補<rt>こうほ</rt></ruby></div></div>
+      <div class="funnel-arrow">▼ メンバー<ruby>全員<rt>ぜんいん</rt></ruby>の<ruby>投票<rt>とうひょう</rt></ruby></div>
+      <div class="funnel-step win"><div class="f-n">1<ruby>作品<rt>さくひん</rt></ruby></div><div class="f-d">👑 <ruby>最優秀賞<rt>さいゆうしゅうしょう</rt></ruby>「いいもりん」</div></div>
+    </div>
+  </section>
+
+  <!-- ⑤ これから -->
+  <section class="next alt" aria-labelledby="next-heading">
+    <h2 class="tag" id="next-heading">🎉 これから</h2>
+    <div class="coming">
+      <div class="c-t"><ruby>公式<rt>こうしき</rt></ruby>キャラクター<br><ruby>制作中<rt>せいさくちゅう</rt></ruby>！</div>
+      <div class="c-d">
+        <ruby>最優秀賞<rt>さいゆうしゅうしょう</rt></ruby>の<ruby>作品<rt>さくひん</rt></ruby>をもとに、<br>
+        プロのイラストレーターさんと<ruby>一緒<rt>いっしょ</rt></ruby>に、<br>
+        <ruby>大東<rt>だいとう</rt></ruby>JCの<ruby>公式<rt>こうしき</rt></ruby>キャラクターをつくっています。<br><br>
+        <b><ruby>完成<rt>かんせい</rt></ruby>したキャラクターのお<ruby>披露目<rt>ひろめ</rt></ruby>は<br>10<ruby>月<rt>がつ</rt></ruby><ruby>下旬<rt>げじゅん</rt></ruby>！</b><br>
+        おたのしみに！
+      </div>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item done"><span class="t-icon">📥</span><div class="t-body"><div class="t-when">5<ruby>月<rt>がつ</rt></ruby><ruby>中旬<rt>ちゅうじゅん</rt></ruby> 〜 6<ruby>月<rt>がつ</rt></ruby><ruby>中旬<rt>ちゅうじゅん</rt></ruby></div><div class="t-what"><ruby>応募<rt>おうぼ</rt></ruby><ruby>受付<rt>うけつけ</rt></ruby> <span class="done-mark">✔ 67作品！</span></div></div></div>
+      <div class="timeline-item done"><span class="t-icon">🔍</span><div class="t-body"><div class="t-when">6<ruby>月<rt>がつ</rt></ruby><ruby>下旬<rt>げじゅん</rt></ruby> 〜 7<ruby>月<rt>がつ</rt></ruby><ruby>下旬<rt>げじゅん</rt></ruby></div><div class="t-what"><ruby>選考<rt>せんこう</rt></ruby>・<ruby>選考会議<rt>せんこうかいぎ</rt></ruby> <span class="done-mark">✔</span></div></div></div>
+      <div class="timeline-item done"><span class="t-icon">🗳️</span><div class="t-body"><div class="t-when">8<ruby>月<rt>がつ</rt></ruby><ruby>中旬<rt>ちゅうじゅん</rt></ruby></div><div class="t-what">メンバー<ruby>投票<rt>とうひょう</rt></ruby>・<ruby>最優秀賞<rt>さいゆうしゅうしょう</rt></ruby><ruby>決定<rt>けってい</rt></ruby> <span class="done-mark">✔ このページ！</span></div></div></div>
+      <div class="timeline-item"><span class="t-icon">🎨</span><div class="t-body"><div class="t-when">8<ruby>月<rt>がつ</rt></ruby><ruby>下旬<rt>げじゅん</rt></ruby> 〜 9<ruby>月<rt>がつ</rt></ruby></div><div class="t-what">イラストレーターによる<ruby>制作<rt>せいさく</rt></ruby></div></div></div>
+      <div class="timeline-item"><span class="t-icon">🎉</span><div class="t-body"><div class="t-when">10<ruby>月<rt>がつ</rt></ruby><ruby>下旬<rt>げじゅん</rt></ruby></div><div class="t-what"><ruby>公式<rt>こうしき</rt></ruby>キャラクター お<ruby>披露目<rt>ひろめ</rt></ruby>！</div></div></div>
+    </div>
+  </section>
+
+  <!-- ⑥ 全作品ギャラリー -->
+  <section class="gallery" aria-labelledby="gallery-heading">
+    <h2 class="tag red" id="gallery-heading">🎨 <ruby>全<rt>ぜん</rt></ruby><ruby>応募<rt>おうぼ</rt></ruby><ruby>作品<rt>さくひん</rt></ruby></h2>
     <p class="section-note">
       ご<ruby>応募<rt>おうぼ</rt></ruby>いただいた<b><ruby>全<rt>ぜん</rt></ruby>67<ruby>作品<rt>さくひん</rt></ruby></b>を<ruby>紹介<rt>しょうかい</rt></ruby>します！<br>
       どの<ruby>作品<rt>さくひん</rt></ruby>も<ruby>素敵<rt>すてき</rt></ruby>なアイデアがいっぱいです。
     </p>
     <div class="gallery-grid" id="gallery-grid"></div>
     <p class="gallery-hint">▲ カードをタップするとプロフィールが<ruby>見<rt>み</rt></ruby>られるよ</p>
-  </section>
-
-  <section class="schedule" aria-labelledby="schedule-heading">
-    <h2 class="tag red" id="schedule-heading">これからのながれ</h2>
-    <div class="timeline">
-      <div class="timeline-item done"><span class="t-icon">📥</span><div class="t-body"><div class="t-when">5<ruby>月<rt>がつ</rt></ruby><ruby>中旬<rt>ちゅうじゅん</rt></ruby> 〜 6<ruby>月<rt>がつ</rt></ruby><ruby>中旬<rt>ちゅうじゅん</rt></ruby></div><div class="t-what"><ruby>応募<rt>おうぼ</rt></ruby><ruby>受付<rt>うけつけ</rt></ruby> <span class="done-mark">✔ 67作品！</span></div></div></div>
-      <div class="timeline-item done"><span class="t-icon">🔍</span><div class="t-body"><div class="t-when">6<ruby>月<rt>がつ</rt></ruby><ruby>下旬<rt>げじゅん</rt></ruby> 〜 7<ruby>月<rt>がつ</rt></ruby><ruby>中旬<rt>ちゅうじゅん</rt></ruby></div><div class="t-what">ファイナリスト<ruby>選考<rt>せんこう</rt></ruby> <span class="done-mark">✔</span></div></div></div>
-      <div class="timeline-item done"><span class="t-icon">🌐</span><div class="t-body"><div class="t-when">7<ruby>月<rt>がつ</rt></ruby><ruby>下旬<rt>げじゅん</rt></ruby> 〜 8<ruby>月<rt>がつ</rt></ruby><ruby>中旬<rt>ちゅうじゅん</rt></ruby></div><div class="t-what"><ruby>全<rt>ぜん</rt></ruby><ruby>作品<rt>さくひん</rt></ruby> Web<ruby>公開<rt>こうかい</rt></ruby> <span class="done-mark">✔ このページ！</span></div></div></div>
-      <div class="timeline-item"><span class="t-icon">🏆</span><div class="t-body"><div class="t-when">8<ruby>月<rt>がつ</rt></ruby><ruby>下旬<rt>げじゅん</rt></ruby></div><div class="t-what"><ruby>最優秀賞<rt>さいゆうしゅうしょう</rt></ruby> <ruby>決定<rt>けってい</rt></ruby></div></div></div>
-      <div class="timeline-item"><span class="t-icon">🎉</span><div class="t-body"><div class="t-when">10<ruby>月<rt>がつ</rt></ruby><ruby>下旬<rt>げじゅん</rt></ruby></div><div class="t-what">お<ruby>披露目<rt>ひろめ</rt></ruby>！</div></div></div>
-    </div>
   </section>
 </main>
 
@@ -496,14 +751,54 @@
 </div>
 
 <script>
-// ============================================================
-// ファイナリスト作品ID（採点結果確定後にここを差し替える）
-// 例: const FINALIST_IDS = [3, 8, 15, 22, 31, 40, 45, 51, 60, 67];
-// ============================================================
-const FINALIST_IDS = [48, 15, 30, 32, 41, 6, 49, 53, 56, 59];
+const GRAND_ID = 49;
+const RUNNER_IDS = [59, 48];
 
-const IMAGE_BASE = "images/";
+const IMAGE_BASE = "../images/";
 const WORKS = [{"id":1,"characterName":"イカぶし","personality":"やさしい","skill":"ラリアット","favoritePlace":"のざき（野崎）","weakness":"せなか","favoriteFood":"リンゴ","catchphrase":"","dream":"","extra":"","imageFile":"01.JPEG"},{"id":2,"characterName":"へらくれす","personality":"つよい","skill":"にじいろにひかる","favoritePlace":"ふかきたりょくち（深北緑地）","weakness":"せなか","favoriteFood":"","catchphrase":"","dream":"","extra":"","imageFile":"02.JPEG"},{"id":3,"characterName":"まるピザやろう","personality":"いじわる","skill":"ぶたばな","favoritePlace":"こうえん（公園）","weakness":"ままによわい","favoriteFood":"いちご","catchphrase":"—","dream":"—","extra":"キティちゃん、かけっこ","imageFile":"03.JPEG"},{"id":4,"characterName":"クリーパー","personality":"あわてんぼう","skill":"ばくはつ！","favoritePlace":"りくち（陸地）","weakness":"ねこ","favoriteFood":"TNT","catchphrase":"","dream":"","extra":"ねこが来るとにげてしまう","imageFile":"04.JPEG"},{"id":5,"characterName":"うさ","personality":"やさしい・げんき","skill":"ものをなおすこと","favoritePlace":"モノヅクリのまち","weakness":"りょうり（料理）","favoriteFood":"りんご","catchphrase":"","dream":"まちをつくること","extra":"","imageFile":"05.JPEG"},{"id":6,"characterName":"ささごん","personality":"あわてんぼう","skill":"竹をきる／竹の実を育てて食べる","favoritePlace":"たけのなか（竹の中）","weakness":"雨の日にでかくなる（4日後晴れると死ぬ）","favoriteFood":"たけ（竹）","catchphrase":"だっち","dream":"森をいっぱいにする","extra":"友だちがいる","imageFile":"06.JPEG"},{"id":7,"characterName":"ハムマン","personality":"元気でやさしい","skill":"人を助けること","favoritePlace":"ゲームセンター","weakness":"虫","favoriteFood":"ひまわりのたね","catchphrase":"マン","dream":"ヒーローになること","extra":"小食・はずかしがりや","imageFile":"07.JPEG"},{"id":8,"characterName":"あくまキングレイバーりゅう","personality":"げんき","skill":"ふむ・きられたらいろいろ15倍分身できる","favoritePlace":"ふかきたりょくち（深北緑地）","weakness":"スピードがおそい","favoriteFood":"ぜんぶ","catchphrase":"ふんでやる。","dream":"世界せいふく","extra":"ぜんぶ一口","imageFile":"08.JPEG"},{"id":9,"characterName":"ぴりちゃん｜めいちゃん","personality":"あわてんぼう｜やさしい","skill":"めらめら｜めろめろ","favoritePlace":"工場｜公園","weakness":"お水｜ほのお","favoriteFood":"ようかん","catchphrase":"ない","dream":"工場","extra":"—","imageFile":"09.JPG"},{"id":10,"characterName":"いえろぼ","personality":"げんき・やさしい","skill":"じかんをきちんとおしえてくれる","favoritePlace":"わたしのとなり","weakness":"ぱんち","favoriteFood":"れいんぼーのりんご","catchphrase":"じかんだよー","dream":"てんし","extra":"","imageFile":"10.JPEG"},{"id":11,"characterName":"小鳥遊だいと（たかなしだいと）","personality":"てんねん・くいしんぼう","skill":"おおぐい（大食い）","favoritePlace":"おんちがわ（恩智川）","weakness":"食べものをうばわれる","favoriteFood":"たこやき、てんしんはん","catchphrase":"のだいん","dream":"おおぐいたいかいにでる","extra":"メジロと大東市のハーフ","imageFile":"11.JPEG"},{"id":12,"characterName":"スーター","personality":"げんき","skill":"けんだま","favoritePlace":"車","weakness":"ハラパン","favoriteFood":"水","catchphrase":"マジデ","dream":"[不明瞭]","extra":"なんでも地球よりもでかい","imageFile":"12.JPEG"},{"id":13,"characterName":"ピヨッピ","personality":"めんどくさがり","skill":"むしたべるの","favoritePlace":"いいもりやま（飯盛山）","weakness":"おゆ（お湯）","favoriteFood":"バッタ","catchphrase":"だまれ","dream":"きょうりゅうになること","extra":"性別おんな、さわりごこちふわふわ、なきごえ「ピッピ」、大きさ10cm","imageFile":"13.JPEG"},{"id":14,"characterName":"ざりかに","personality":"サイコパス","skill":"はさみではさむ","favoritePlace":"ふかきたりょくちのいけ（深北緑地の池）","weakness":"ホタル","favoriteFood":"白身魚","catchphrase":"どけやおまえたち","dream":"ざりがにになりたい","extra":"おこったらこわい、さわりごこちはかちかち、なきごえ「めー」、ともだちはいない","imageFile":"14.JPEG"},{"id":15,"characterName":"マツリキッド","personality":"げんき","skill":"まつりのうんをあげるわざ","favoritePlace":"野崎まつり","weakness":"まつりぎらいの子","favoriteFood":"みるくせんべり、タコス","catchphrase":"たっのしー","dream":"まつりをもっともりあげる","extra":"みるくせんべい、タコスがうっている店にいる","imageFile":"15.JPEG"},{"id":16,"characterName":"ゆうことおきくどれい","personality":"げんき","skill":"はやくはしる（速く走る）","favoritePlace":"ともだちのいえ（友達の家）","weakness":"おやとけんかすること","favoriteFood":"","catchphrase":"","dream":"","extra":"","imageFile":"16.JPEG"},{"id":17,"characterName":"ネコせ","personality":"やさしい","skill":"とぶこと（飛ぶこと）","favoritePlace":"のざきまいり（野崎参り）","weakness":"わるぐち（悪口）","favoriteFood":"カレーライス","catchphrase":"だいぢょうぶ","dream":"ヒーロー","extra":"2番目にすきな場所：深北緑地、おとこ","imageFile":"17.JPEG"},{"id":18,"characterName":"うかうかちゃん","personality":"げんき、やさしい","skill":"おえかき・ぬりえ","favoritePlace":"さんかくこうえん","weakness":"いじわる","favoriteFood":"いちご","catchphrase":"わたちかわいいー？","dream":"あいどる","extra":"かみかざりはほんもののほたる","imageFile":"18.JPEG"},{"id":19,"characterName":"りなっち","personality":"りなっち","skill":"へんなかお","favoritePlace":"[読取不可]","weakness":"なし","favoriteFood":"そば","catchphrase":"[読取不可]","dream":"マクドナルド","extra":"※撮影角度＋独特の文字で読み取り困難","imageFile":"19.JPG"},{"id":20,"characterName":"やっさーちゃん","personality":"うたってばっかり","skill":"たててておあげれる","favoritePlace":"ふとんのなか・こうえんのすべりだい","weakness":"ピーマン・トマト・やさい","favoriteFood":"おやつ","catchphrase":"れっさー","dream":"うたう","extra":"いたずらずき、しっぽをつままれると泣く、れっさらんご（？）","imageFile":"20.JPEG"},{"id":21,"characterName":"アヒジロ","personality":"れいぎ正しい","skill":"およぎ（泳ぎ）","favoritePlace":"水ごう","weakness":"きたない川","favoriteFood":"","catchphrase":"","dream":"","extra":"人間でいうと17さい","imageFile":"21.JPEG"},{"id":22,"characterName":"ピカピカちゃん","personality":"げんきでやさしい、みんなをげんきにしてくれる","skill":"みんなをげんきづけること","favoritePlace":"やま（山）","weakness":"あし（足）","favoriteFood":"トマトとにんじん","catchphrase":"ピカ","dream":"せかいじゅうのみんなをげんきづける","extra":"","imageFile":"22.JPEG"},{"id":23,"characterName":"こくん（長い名前）","personality":"やんちゃ","skill":"ぽこぽこぱんち","favoritePlace":"うらやま","weakness":"りんごをもられたら","favoriteFood":"とくだいぶどう（特大ぶどう）","catchphrase":"おつかれもち","dream":"[読取不可]","extra":"[読取不可]","imageFile":"23.JPEG"},{"id":24,"characterName":"ミユ","personality":"あまえんぼうでやさしい","skill":"あまえる","favoritePlace":"ロケット公園","weakness":"わるくちをいわれること","favoriteFood":"トマト","catchphrase":"楽しいね。","dream":"お花屋さん","extra":"なき虫さん、さびしがり屋、ミユビナマケモノだからミユ","imageFile":"24.JPEG"},{"id":25,"characterName":"ねやがわチャン","personality":"元気でやさしいあわてんぼうの女の子","skill":"前まわり・さかあがり・木のぼり","favoritePlace":"ねやがわ","weakness":"め（目）","favoriteFood":"やさい","catchphrase":"ねや","dream":"ねやがわをきれいにする","extra":"ねやがわがきれい","imageFile":"25.JPEG"},{"id":26,"characterName":"きくちきくちゃん","personality":"やさしい・まじめ・みんなのアイドル・すなお","skill":"きくの花をさかせること・きくの花でいろんなものをつくる","favoritePlace":"きくの花がある場所","weakness":"虫・どうぶつ","favoriteFood":"ハチミツ","catchphrase":"キクー","dream":"町全体がきくの花になる","extra":"きくの花の芽から出てきた妖精、髪の毛の緑のところはでてくるとききくの葉しか食べてなかったから、じつはすごくメイクしている","imageFile":"26.JPEG"},{"id":27,"characterName":"ラブブ","personality":"[空欄]","skill":"[不明瞭]","favoritePlace":"ジャングル","weakness":"[空欄]","favoriteFood":"カレー","catchphrase":"らぶぶ","dream":"ぼうけん","extra":"","imageFile":"27.JPEG"},{"id":28,"characterName":"とまちゃん","personality":"ひとみしり（人見知り）","skill":"うんてい","favoritePlace":"コンサート","weakness":"みず（水）","favoriteFood":"いちご","catchphrase":"とま","dream":"フルーツやさん","extra":"おうじさま、プール","imageFile":"28.JPEG"},{"id":29,"characterName":"かな","personality":"いじわる","skill":"200m先の音をひろう","favoritePlace":"やかたぶね","weakness":"耳","favoriteFood":"つくし","catchphrase":"け","dream":"","extra":"","imageFile":"29.JPEG"},{"id":30,"characterName":"ゆうき","personality":"やさしい（たまにおこりんぼう）","skill":"力持ち（畑仕事を手伝う）","favoritePlace":"深北緑地・りゅうこうじ","weakness":"雨の日（あそべなくなってうごけなくなる）","favoriteFood":"お肉・れんこん","catchphrase":"ありがとう。ごめんね。","dream":"友だちと仲よく","extra":"海や川が苦手、公園が好き","imageFile":"30.JPEG"},{"id":31,"characterName":"メジリョク","personality":"あわてんぼう","skill":"かみつく","favoritePlace":"かわ（川）","weakness":"あたま","favoriteFood":"はっぱ","catchphrase":"こんにちは","dream":"そらとぶこと","extra":"うみにずっとうかんでる、いつも1000m泳いでる、さわりごこちかちかち","imageFile":"31.JPEG"},{"id":32,"characterName":"おきく","personality":"もりあげ上手・げんき","skill":"おどること","favoritePlace":"野崎観音","weakness":"雨（髪がくずれたり・お祭りの人が少なくなるから）","favoriteFood":"れんこん","catchphrase":"たのしい!!","dream":"世界一のダンサー","extra":"野崎まつりになるいと屋台で買い食いしている","imageFile":"32.JPEG"},{"id":33,"characterName":"みこ","personality":"げんき","skill":"じゃんぷ","favoritePlace":"ふかきたりょくち（深北緑地）","weakness":"おばけやしき","favoriteFood":"いちご","catchphrase":"そとであそびたい","dream":"いちごがりいきたい","extra":"","imageFile":"33.JPEG"},{"id":34,"characterName":"きくみこな","personality":"やさしい","skill":"じてんしゃでうまくまわる","favoritePlace":"いいもりやま（飯盛山）","weakness":"すっぱいもの","favoriteFood":"みかん","catchphrase":"みかんたべたい","dream":"じてんしゃで1位になること","extra":"森のなかで鳥や虫を探すのも得意。ご飯の後もみかんを食べる。いつもゆず風呂に入っている。みかんの木を育てている。寝屋川の水をみかんの木にかけてる。","imageFile":"34.JPEG"},{"id":35,"characterName":"のざきまいり","personality":"まじめ","skill":"ドッジボール","favoritePlace":"のざきえき（野崎駅）","weakness":"ひ","favoriteFood":"","catchphrase":"","dream":"","extra":"","imageFile":"35.JPEG"},{"id":36,"characterName":"あくまメタルスライム（親子）","personality":"すぐにげる・こわがりや","skill":"にげる・はねてすすむこと","favoritePlace":"しょうてんがい（商店街）","weakness":"会心の一撃・メタルぎり","favoriteFood":"すべて","catchphrase":"すぐににげるぞー","dream":"キングメタルスライムになること","extra":"めちゃくちゃかたい","imageFile":"36.JPEG"},{"id":37,"characterName":"ちぱじーにばなばなにに","personality":"バナナの人","skill":"バナナビーム","favoritePlace":"ジャングル","weakness":"ばくだん","favoriteFood":"ばなな","catchphrase":"つよいぞ","dream":"バナナマン","extra":"おさる","imageFile":"37.JPEG"},{"id":38,"characterName":"こえだちゃん","personality":"くいしんぼう","skill":"連続さかあがり","favoritePlace":"てらす","weakness":"もり","favoriteFood":"","catchphrase":"今日一緒に遊ぼうよ","dream":"？","extra":"？","imageFile":"38.JPG"},{"id":39,"characterName":"すぎやまあかり（助手はかのん）","personality":"やさしいけどあわてんぼう","skill":"３日だけで家を建てれる","favoritePlace":"深北緑地","weakness":"人形がこわれるとショック死する","favoriteFood":"トマト","catchphrase":"〜ぜ","dream":"つきにいくこと","extra":"50m走6.4秒、17歳、動物に好かれる 助手は３歳、人になれるし空を飛べる","imageFile":"39.JPG"},{"id":40,"characterName":"きっくん","personality":"活発、水を吸収すると明るくなり、水がなくなると暗くておとなしい","skill":"根を自由に曲げられる","favoritePlace":"菊の畑","weakness":"１ヶ月間水を吸収しなかったら高熱が出る","favoriteFood":"水・雨","catchphrase":"〜きく","dream":"世界一綺麗な菊でギネスに任命される","extra":"菊コンテストでグランプリをとった","imageFile":"40.JPG"},{"id":41,"characterName":"きく だいとちゃん","personality":"やさしい、マイペース、まじめ","skill":"口笛でメジロを呼ぶ","favoritePlace":"深北緑地","weakness":"自然を破壊する人・物","favoriteFood":"レンコン・トマト","catchphrase":"〜だトン","dream":"全種類の生き物と仲良くなること","extra":"服のイメージはトマト・はちみつ・竹・レンコン。妖精。珊瑚樹のかみかざりを付けている。","imageFile":"41.JPG"},{"id":42,"characterName":"ダイチ","personality":"ハッピーもうれつ","skill":"超早いバク転","favoritePlace":"広場","weakness":"トマトの味","favoriteFood":"れんこん","catchphrase":"ダ。","dream":"大東市をハッピーランドにする！","extra":"菊とさんごじゅの髪飾り。胸に大東市のダ","imageFile":"42.JPG"},{"id":43,"characterName":"だいめん","personality":"暖かくて優しい性格","skill":"ラーメンを溢さず歩くこと","favoritePlace":"深北緑地","weakness":"冷えること","favoriteFood":"餃子","catchphrase":"ぼく、チャーシュー乗ってる？","dream":"皆に大東市を好きになってもらうこと。","extra":"","imageFile":"43.JPG"},{"id":44,"characterName":"とうしくん","personality":"ヤンチャでいじわるだけど本当はすっごく優しい。独り言が多い","skill":"うんてい","favoritePlace":"草むら","weakness":"こちょこちょ","favoriteFood":"お寿司","catchphrase":"すごー（棒読み）","dream":"体操選手","extra":"","imageFile":"44.JPG"},{"id":45,"characterName":"ねこくん","personality":"男の子で大人しく可愛いらしい性格です","skill":"高い所を登る","favoritePlace":"夜の公園","weakness":"勉強","favoriteFood":"お魚","catchphrase":"お腹すいたよー","dream":"お魚いーーっぱい食べたい","extra":"","imageFile":"45.JPG"},{"id":46,"characterName":"はぴにこ","personality":"ハッピーでにこにこ","skill":"みんなを笑顔にすること","favoritePlace":"深北緑地","weakness":"暗い場所","favoriteFood":"冷たいアイス","catchphrase":"〜はっぴ（ありがとはっぴ等）","dream":"大東市でダイトンより有名になりたい！！","extra":"好きな犬をモチーフに。大東市はだんじりが有名だからはっぴを着せてみた。名前の由来ははっぴをきてにこにこ","imageFile":"46.JPG"},{"id":47,"characterName":"ぱプぱ","personality":"優しい、食いしん坊","skill":"みんなと仲良く出来ること","favoritePlace":"大東市","weakness":"こしょこしょ","favoriteFood":"パプリカ、プリン、パイナップル","catchphrase":"お腹減った〜！","dream":"人気者になること！","extra":"","imageFile":"47.JPG"},{"id":48,"characterName":"大とうふくん","personality":"いつも元気もりもり・少しヤンチャ・ヒーロー的な存在","skill":"人助け","favoritePlace":"野崎観音","weakness":"重さに耐えられない","favoriteFood":"大豆","catchphrase":"俺に任せろ","dream":"世界を平和にする","extra":"大東市の大東ととうふを使って考えました。","imageFile":"48.JPG"},{"id":49,"characterName":"いいもりん","personality":"飯盛山にハイキングするのが大好きな明るい性格","skill":"おにぎりを盛り盛り食べること","favoritePlace":"飯盛山","weakness":"おにぎりを食べすぎちゃうところ","favoriteFood":"おにぎり","catchphrase":"語尾に「〜もり」","dream":"たくさんの人に飯盛山を好きになってもらう","extra":"飯盛山をメインにして、市の花の菊や市の木のさんごじゅも入れてみました。 色も山の色の緑、大東市に流れている川の色の青、太陽の色の赤といった色で、元気いっぱいに見えるようにしてみました。 ポイントは帽子が飯盛山のような形でさんごじゅのかざりを付けている。そしてお気に入りの菊の形をしたリュックを背負って、おにぎりを持って、飯盛山にハイキングに行くのが大好きな元気いっぱいのキャラクターです！","imageFile":"49.JPG"},{"id":50,"characterName":"だいぺんちゃん","personality":"優しい","skill":"魔法を使うこと","favoritePlace":"可愛いのがたくさんある所","weakness":"熱いもの","favoriteFood":"氷の飴","catchphrase":"かわいい","dream":"可愛い物が売ってる店","extra":"","imageFile":"50.JPG"},{"id":51,"characterName":"大東 ザ 見守り","personality":"明るくて優しい","skill":"手を伸ばす","favoritePlace":"正門","weakness":"寒さ","favoriteFood":"飲み物","catchphrase":"ワホー","dream":"ヒーロー","extra":"","imageFile":"51.JPG"},{"id":52,"characterName":"きらきらちゃん","personality":"元気で明るい","skill":"バドミントン","favoritePlace":"深北緑地","weakness":"怖がり","favoriteFood":"ラーメン","catchphrase":"きらきら","dream":"バドミントンをみんなに好きになってもらうこと！","extra":"毎年冬のイルミネーションが大好きなのでそれをイメージしました。 あと、バドミントンを習っていて昔はバドミントンが大東市でも有名だったけど今はやる人が減ってきてるのでみんなにバドミントンの楽しさを知ってほしくてイメージしました。","imageFile":"52.JPG"},{"id":53,"characterName":"さくらちゃん","personality":"頑張りやさん","skill":"バドミントン","favoritePlace":"深北緑地","weakness":"蜂が怖い","favoriteFood":"桜もち","catchphrase":"ひらひら","dream":"バドミントンをする人たちが増えること","extra":"深北緑地の桜がとても綺麗で毎年家族でお花見に行ってるので桜をイメージしました。 バドミントンを習ってるのでみんなにバドミントンを好きになって欲しくてバドミントンを持たせてみました。","imageFile":"53.JPG"},{"id":54,"characterName":"大大（だいだい）","personality":"おっとり","skill":"身を隠すこと","favoritePlace":"川","weakness":"火","favoriteFood":"あんこ","catchphrase":"だよ〜","dream":"大東市をピカピカにする","extra":"","imageFile":"54.JPG"},{"id":55,"characterName":"だいみちゃん","personality":"おっとりさん","skill":"ダンス","favoritePlace":"オペラパーク","weakness":"泣き虫","favoriteFood":"みかん","catchphrase":"にゃは","dream":"ダンサーになること","extra":"大東市の花の菊と好きな猫をモチーフにしました。コンセプトは菊と黄色いビタミンカラーです。野崎観音をイメージして和風の衣装を着せました。","imageFile":"55.JPG"},{"id":56,"characterName":"ちゅきまんま","personality":"優しい","skill":"とうめいになる","favoritePlace":"大東市","weakness":"悪口を言われる","favoriteFood":"トマト","catchphrase":"あのー","dream":"公式キャラクターになること、みんながいいきもちですごすこと","extra":"優しい妖怪みんなにすかれている！","imageFile":"56.JPG"},{"id":57,"characterName":"にょろちゃん","personality":"やさしくて、みんなを見守る","skill":"こまっている人を見つけてたすけること","favoritePlace":"末広公園","weakness":"みんながけんかしているとかなしくなる","favoriteFood":"メロン","catchphrase":"だいじょうぶだよ！","dream":"大東市のみんなを笑顔にし、仲良しのまちにすること。","extra":"","imageFile":"57.JPG"},{"id":58,"characterName":"キクキク","personality":"お気楽","skill":"みんなを元気にする","favoritePlace":"末広公園","weakness":"根っこをこちょこちょされると寝る","favoriteFood":"ミニトマト","catchphrase":"キクッ‼️ほんまにな","dream":"世界中の人々を元気にすること","extra":"手の形が特徴です♡","imageFile":"58.JPG"},{"id":59,"characterName":"ジュジュ丸","personality":"勇敢で我慢強い","skill":"大東市アピール","favoritePlace":"深北緑地、飯盛山","weakness":"アブラムシ、サンゴジュハムシ","favoriteFood":"焼肉","catchphrase":"大東市がだーいすき","dream":"大東市を日本一元気な市にしたい","extra":"大東市の形が犬の形に見えたので自分の好きな芝犬をモチーフにしました。学校で習った大東市の花「菊」と大東市の木「さんごじゅ」が特徴です。","imageFile":"59.JPG"},{"id":60,"characterName":"ダイトちゃん","personality":"すぐ怒る","skill":"お掃除","favoritePlace":"大東市","weakness":"運動苦手","favoriteFood":"いちご","catchphrase":"ピカピカになったよー","dream":"大東市をキレイにする","extra":"大東市のアイドル","imageFile":"60.JPG"},{"id":61,"characterName":"お菓子が大好きなうさぎさん","personality":"とにかく元気！遊ぶことがとっても大好き","skill":"美味しいものをいっぱいたべること","favoritePlace":"深北緑地","weakness":"寂しがりや","favoriteFood":"オムレツ、ミートスパゲティ","catchphrase":"いっぱい食べるぞー","dream":"友達100人作ること！","extra":"","imageFile":"61.JPG"},{"id":62,"characterName":"ほうほう","personality":"町の安全を見守っている","skill":"猫と話せる","favoritePlace":"プール","weakness":"じっとしているのが苦手","favoriteFood":"パン","catchphrase":"ほうほうほほう","dream":"宇宙に行くこと","extra":"頭の上に妖精がいる。空飛ぶ猫がお友達。 町のみんなの安全を守りたいと思っている。","imageFile":"62.JPG"},{"id":63,"characterName":"キクちん","personality":"明るい","skill":"素敵な笑顔","favoritePlace":"公園","weakness":"寒さ","favoriteFood":"たこ焼き","catchphrase":"大東市最高","dream":"みんなを笑顔にする","extra":"大東市の花といえば菊なので、服に菊の絵を書き、大阪といえばたこ焼きなので顔にたこ焼きを書きました。","imageFile":"63.JPG"},{"id":64,"characterName":"へいへいぶた","personality":"とにかく元気で踊るのが好き","skill":"踊ること","favoritePlace":"公園","weakness":"こちょこちょ","favoriteFood":"パンケーキ","catchphrase":"ぶー","dream":"パンケーキ屋さんになる。","extra":"大東市と言えば公園だと思ったので、服にブランコとかを書きました。","imageFile":"64.JPG"},{"id":65,"characterName":"とんちゃん","personality":"優しくていつも笑っている。寂しがり屋","skill":"餃子を包むスピードが超高速。","favoritePlace":"滑り台がある公園","weakness":"水にぬれること","favoriteFood":"餃子、ラーメン、綿あめ","catchphrase":"トントン　ふわ〜","dream":"日本一の美味しい餃子を作りたい。","extra":"大東市は中華が人気なので、餃子のキャラクターにしました。あったかい心の持ち主で、美味しい餃子を作る修行中。みんなに食べてもらって、喜びを届けたいと思っている。","imageFile":"65.JPG"},{"id":66,"characterName":"いちごやろう","personality":"やさしい","skill":"—","favoritePlace":"こうえん（公園）","weakness":"ままによわい","favoriteFood":"いちご","catchphrase":"—","dream":"—","extra":"キティちゃん、かけっこ","imageFile":"66.JPEG"},{"id":67,"characterName":"ダイトプス","personality":"♂やさしい　♀おこりっぽい","skill":"♂逆立ち　♀とびばこ","favoritePlace":"深北緑地","weakness":"ごはんがあまり食べられない","favoriteFood":"♂バナナ　♀トマト","catchphrase":"大東市です","dream":"本物の大東市になる！","extra":"-","imageFile":"67.JPG"}];
+
+const COMMENTS = {
+  49: {
+    motif: "飯盛山、三好長慶ゆかりのサンゴジュ、菊の花の形をしたリュックなど、大東市の要素がふんだんに盛り込まれています。応募時から細かく設定が作り込まれた作品です。",
+    members: [
+      "大東市の要素（菊、サンゴジュ、頭部の飯盛山）が一番わかりやすく盛り込まれていて、最も「大東市らしさ」が伝わってくる。完成度が高く、展開した際のイメージが非常に湧きやすい。",
+      "完成度で言えば間違いなく「いいもりん」。色使いやフォルムの完成度が高く評価できる。",
+      "完成度が高く、今後の運用や展開がやりやすい作品。",
+      "飯盛山をはじめとする地域の要素が凝縮されていて、大東市を盛り上げようという意図が一番伝わってくる。完成度の高さだけでなく、大東市をアピールする姿勢が素晴らしい。"
+    ],
+    pro: [
+      "設定もイラストも完成度が非常に高くて、表情も柔らかい感じ。小道具まで完璧やなと思って見ていました。",
+      "このまま使いやすい（描きやすい・動かしやすい）ですね。リュックを外したりといった応用も利くし、素晴らしいと思います。"
+    ]
+  },
+  59: {
+    motif: "犬（柴犬）をモチーフにしたキャラクター。大東市の地図の形（地形）が「犬の形」に見えたことからインスピレーションを受けて描かれています。尻尾がサンゴジュになっており、菊の花もあしらわれています。",
+    members: [
+      "大人の目では気づかない「大東市の形が犬に見えた」という子供らしいひらめきと想像力が素晴らしい。菊やサンゴジュの要素も入っており、JCの活動文脈でも語りやすいストーリーがある。",
+      "犬というベースの設定があり、装飾品で大東市らしさを出しているので、状況に応じていじりやすく使い勝手が良い。",
+      "大東市の形から生まれたワンちゃんという物語があり、アニメやCM、広報などでイメージしやすい。覚えてもらいやすく、少し調整を加えることでさらに完成度が高まる伸び代がある。"
+    ],
+    pro: [
+      "大東市といえば菊などに目がいきがちですが、「市の地形の形」をモチーフにするという見方・発想が素晴らしい。",
+      "モチーフは柴犬と書かれていますが、野崎観音の狛犬も連想させられます。",
+      "メインキャラとしても良いですが、メインキャラクターの脇を固める「お供」として非常に良い役割を果たせる。そうしたポジションも含めてよく考えられています。"
+    ]
+  },
+  48: {
+    motif: "「大東市（だいとうし）」と「豆腐（とうふ）」をかけた親しみやすいネーミング。野崎観音ゆかり（参道周辺の豆腐店や地域文化など）の要素を背景に持つ作品です。",
+    members: [
+      "大東市と豆腐をかけたコンセプトがすごく好き。愛嬌があり、キャラクター化・立体化した時に一番可愛くなると思う。弱点がある（豆腐だから崩れやすい）という設定も可愛い。",
+      "JC（青年会議所）の公式キャラクターとしてイメージした時に、こういった愛され系のキャラクターは非常に馴染みやすい。",
+      "ダジャレから入っている点について地域要素を問われることもあるかもしれないが、応援キャラクターとしてはシンプルで一番親しみやすい。",
+      "キャラクターとしての「いじりやすさ・面白さ」を評価。"
+    ],
+    pro: [
+      "これを見た時に思わず笑ってしまうほどネーミングが最高。「弱そうなヒーロー」というコンセプトが非常に面白い。",
+      "「俺に任せろ」と言いながら「お願い（助けて）」と頼んでいるギャップや、重さに耐えられなさそうな雰囲気が豆腐らしくて愛くるしい。",
+      "大東の豆腐を中心に、他の食材や地域特産品とのコラボレーションなど、楽しさを広げていきやすいキャラクター。"
+    ]
+  }
+};
 
 const PROFILE_FIELDS = [
   ["personality",   "性格"],
@@ -536,27 +831,45 @@ function profileRows(work) {
   return rows;
 }
 
-// ---------- ファイナリスト ----------
-function renderFinalists() {
-  const list = document.getElementById("finalist-list");
-  const section = document.querySelector(".finalists");
-  const finalists = FINALIST_IDS
-    .map(id => WORKS.find(w => w.id === id))
-    .filter(Boolean);
-
-  if (finalists.length === 0) {
-    section.style.display = "none";
-    return;
+// ---------- 最優秀賞 ----------
+function renderGrand() {
+  const w = WORKS.find(x => x.id === GRAND_ID);
+  document.getElementById("grand-profile").innerHTML = profileRows(w);
+  const c = COMMENTS[GRAND_ID];
+  let html = "";
+  for (const m of c.members) {
+    html += `<div class="quote">${esc(m)}<span class="quote-src">— 審査員</span></div>`;
   }
+  for (const p of c.pro) {
+    html += `<div class="quote pro">${esc(p)}<span class="quote-src">— イラストレーター 菊澤こゆり先生</span></div>`;
+  }
+  document.getElementById("grand-comments").innerHTML = html;
+}
 
-  list.innerHTML = finalists.map(w => `
-    <div class="finalist-card">
-      <div class="finalist-ribbon">★ FINALIST ★</div>
-      <div class="finalist-img-wrap"><img src="${IMAGE_BASE}${esc(w.imageFile)}" alt="${esc(w.characterName)}" loading="lazy"></div>
-      <div class="finalist-name">${esc(w.characterName)}</div>
-      <table class="profile-table">${profileRows(w)}</table>
-    </div>
-  `).join("");
+// ---------- 優秀賞 ----------
+function renderRunners() {
+  const list = document.getElementById("runner-list");
+  list.innerHTML = RUNNER_IDS.map(id => {
+    const w = WORKS.find(x => x.id === id);
+    const c = COMMENTS[id] || {};
+    const quotes = []
+      .concat((c.members || []).slice(0, 1).map(t => `<div class="quote">${esc(t)}<span class="quote-src">— 審査員</span></div>`))
+      .concat((c.pro || []).slice(0, 1).map(t => `<div class="quote pro">${esc(t)}<span class="quote-src">— イラストレーター 菊澤こゆり先生</span></div>`))
+      .join("");
+    return `
+      <div class="runner-card">
+        <div class="runner-ribbon">🏅 優秀賞</div>
+        <div class="runner-img-wrap"><img src="${IMAGE_BASE}${esc(w.imageFile)}" alt="${esc(w.characterName)}" loading="lazy"></div>
+        <div class="runner-name">${esc(w.characterName)}</div>
+        <div class="runner-body">
+          <p class="runner-motif">${esc(c.motif || "")}</p>
+          <h3 class="sub-head">コメント</h3>
+          ${quotes}
+          <h3 class="sub-head">プロフィール</h3>
+          <table class="profile-table">${profileRows(w)}</table>
+        </div>
+      </div>`;
+  }).join("");
 }
 
 // ---------- 全作品ギャラリー ----------
@@ -581,12 +894,10 @@ function openWorkModal(id) {
   document.getElementById("work-modal").classList.add("open");
   document.body.style.overflow = "hidden";
 }
-
 function closeWorkModal() {
   document.getElementById("work-modal").classList.remove("open");
   document.body.style.overflow = "";
 }
-
 document.getElementById("work-modal").addEventListener("click", (e) => {
   if (e.target === e.currentTarget) closeWorkModal();
 });
@@ -594,7 +905,8 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") closeWorkModal();
 });
 
-renderFinalists();
+renderGrand();
+renderRunners();
 renderGallery();
 </script>
 </body>
