@@ -712,7 +712,7 @@
     <div class="timeline">
       <div class="timeline-item done"><span class="t-icon">📥</span><div class="t-body"><div class="t-when">5<ruby>月<rt>がつ</rt></ruby><ruby>中旬<rt>ちゅうじゅん</rt></ruby> 〜 6<ruby>月<rt>がつ</rt></ruby><ruby>中旬<rt>ちゅうじゅん</rt></ruby></div><div class="t-what"><ruby>応募<rt>おうぼ</rt></ruby><ruby>受付<rt>うけつけ</rt></ruby> <span class="done-mark">✔ 67作品！</span></div></div></div>
       <div class="timeline-item done"><span class="t-icon">🔍</span><div class="t-body"><div class="t-when">6<ruby>月<rt>がつ</rt></ruby><ruby>下旬<rt>げじゅん</rt></ruby> 〜 7<ruby>月<rt>がつ</rt></ruby><ruby>下旬<rt>げじゅん</rt></ruby></div><div class="t-what"><ruby>選考<rt>せんこう</rt></ruby>・<ruby>選考会議<rt>せんこうかいぎ</rt></ruby> <span class="done-mark">✔</span></div></div></div>
-      <div class="timeline-item done"><span class="t-icon">🗳️</span><div class="t-body"><div class="t-when">8<ruby>月<rt>がつ</rt></ruby><ruby>中旬<rt>ちゅうじゅん</rt></ruby></div><div class="t-what">メンバー<ruby>投票<rt>とうひょう</rt></ruby>・<ruby>最優秀賞<rt>さいゆうしゅうしょう</rt></ruby><ruby>決定<rt>けってい</rt></ruby> <span class="done-mark">✔ このページ！</span></div></div></div>
+      <div class="timeline-item done"><span class="t-icon">🗳️</span><div class="t-body"><div class="t-when">8<ruby>月<rt>がつ</rt></ruby><ruby>中旬<rt>ちゅうじゅん</rt></ruby> 〜 8<ruby>月<rt>がつ</rt></ruby><ruby>下旬<rt>げじゅん</rt></ruby></div><div class="t-what">メンバー<ruby>投票<rt>とうひょう</rt></ruby>・<ruby>最優秀賞<rt>さいゆうしゅうしょう</rt></ruby><ruby>決定<rt>けってい</rt></ruby> <span class="done-mark">✔ このページ！</span></div></div></div>
       <div class="timeline-item"><span class="t-icon">🎨</span><div class="t-body"><div class="t-when">8<ruby>月<rt>がつ</rt></ruby><ruby>下旬<rt>げじゅん</rt></ruby> 〜 9<ruby>月<rt>がつ</rt></ruby></div><div class="t-what">イラストレーターによる<ruby>制作<rt>せいさく</rt></ruby></div></div></div>
       <div class="timeline-item"><span class="t-icon">🎉</span><div class="t-body"><div class="t-when">10<ruby>月<rt>がつ</rt></ruby><ruby>下旬<rt>げじゅん</rt></ruby></div><div class="t-what"><ruby>公式<rt>こうしき</rt></ruby>キャラクター お<ruby>披露目<rt>ひろめ</rt></ruby>！</div></div></div>
     </div>
@@ -841,7 +841,7 @@ function renderGrand() {
     html += `<div class="quote">${esc(m)}<span class="quote-src">— 審査員</span></div>`;
   }
   for (const p of c.pro) {
-    html += `<div class="quote pro">${esc(p)}<span class="quote-src">— イラストレーター 菊澤こゆり先生</span></div>`;
+    html += `<div class="quote pro">${esc(p)}<span class="quote-src">— イラストレーター</span></div>`;
   }
   document.getElementById("grand-comments").innerHTML = html;
 }
@@ -854,7 +854,7 @@ function renderRunners() {
     const c = COMMENTS[id] || {};
     const quotes = []
       .concat((c.members || []).slice(0, 1).map(t => `<div class="quote">${esc(t)}<span class="quote-src">— 審査員</span></div>`))
-      .concat((c.pro || []).slice(0, 1).map(t => `<div class="quote pro">${esc(t)}<span class="quote-src">— イラストレーター 菊澤こゆり先生</span></div>`))
+      .concat((c.pro || []).slice(0, 1).map(t => `<div class="quote pro">${esc(t)}<span class="quote-src">— イラストレーター</span></div>`))
       .join("");
     return `
       <div class="runner-card">
